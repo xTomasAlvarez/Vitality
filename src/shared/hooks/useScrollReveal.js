@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export function useScrollReveal(options = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }) {
+export function useScrollReveal(options = { threshold: 0.02, rootMargin: '0px 0px -20px 0px' }) {
   const ref = useRef(null);
 
   useEffect(() => {

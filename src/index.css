@@ -1,13 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 @import "tailwindcss";
 @config "../tailwind.config.js";
+
+@layer base {
+  html,
+  body {
+    scroll-behavior: smooth;
+    font-family: "Atkinson Hyperlegible", "DM Sans", sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  .font-serif-accent {
+    font-family: "Instrument Serif", serif;
+  }
+}
 
 @layer utilities {
   .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .reveal.active {
@@ -19,17 +35,107 @@
     animation: float 6s ease-in-out infinite;
   }
   .animate-float-delayed-1 {
-    animation: float 6s ease-in-out 1s infinite;
+    animation: float 6s ease-in-out 1.5s infinite;
   }
   .animate-float-delayed-2 {
-    animation: float 6s ease-in-out 2s infinite;
+    animation: float 6s ease-in-out 3s infinite;
   }
   .animate-float-delayed-3 {
-    animation: float 6s ease-in-out 3s infinite;
+    animation: float 6s ease-in-out 4.5s infinite;
   }
 
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
+}
+
+/* ==========================================
+   MODO ALTO CONTRASTE REAL (WCAG AAA)
+   ========================================== */
+html.high-contrast,
+html.high-contrast body {
+  background-color: #05080f !important;
+  color: #ffffff !important;
+}
+
+html.high-contrast section,
+html.high-contrast footer,
+html.high-contrast nav {
+  background-color: #05080f !important;
+  background-image: none !important;
+  border-color: #FFE600 !important;
+}
+
+html.high-contrast h1,
+html.high-contrast h2,
+html.high-contrast h3,
+html.high-contrast h4,
+html.high-contrast h5,
+html.high-contrast h6 {
+  color: #ffffff !important;
+}
+
+html.high-contrast p,
+html.high-contrast span,
+html.high-contrast li,
+html.high-contrast label {
+  color: #f3f4f6 !important;
+}
+
+html.high-contrast .text-accent,
+html.high-contrast .font-serif,
+html.high-contrast .font-serif-accent {
+  color: #FFE600 !important;
+}
+
+html.high-contrast .bg-white,
+html.high-contrast .bg-background-light,
+html.high-contrast .bg-background-darker,
+html.high-contrast .hc-card {
+  background-color: #0d1322 !important;
+  color: #ffffff !important;
+  border: 2px solid #00F5D4 !important;
+  box-shadow: none !important;
+}
+
+html.high-contrast .bg-accent,
+html.high-contrast button.bg-accent,
+html.high-contrast a.bg-accent {
+  background-color: #FFE600 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast input,
+html.high-contrast select,
+html.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #FFE600 !important;
+  border: 2px solid #FFE600 !important;
+}
+
+html.high-contrast a:focus-visible,
+html.high-contrast button:focus-visible,
+html.high-contrast [tabindex]:focus-visible {
+  outline: 3px solid #FFE600 !important;
+  outline-offset: 3px !important;
+}
+
+/* ==========================================
+   PAUSAR ANIMACIONES (REDUCED MOTION)
+   ========================================== */
+html.pause-animations *,
+html.pause-animations *::before,
+html.pause-animations *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.pause-animations .reveal {
+  opacity: 1 !important;
+  transform: none !important;
 }

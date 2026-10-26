@@ -12,6 +12,7 @@ export default {
         accent: {
           DEFAULT: '#2CB5AE',
           light: '#4FD1C9',
+          dark: '#1E8E88',
         },
         background: {
           light: '#F5F8FA',
@@ -23,7 +24,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Atkinson Hyperlegible"', '"DM Sans"', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'serif'],
       },
     },
   },
