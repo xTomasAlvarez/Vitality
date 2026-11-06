@@ -127,6 +127,8 @@ export default function Hero() {
   }, []);
 
   const handleMouseMove = (e) => {
+    // Solo aplicar tilt en pantallas medianas/grandes para evitar jitter táctil
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -164,14 +166,14 @@ export default function Hero() {
          ======================================================== */}
       <section
         id="inicio"
-        className="relative min-h-[90vh] flex items-center pt-28 pb-16 lg:pt-36 lg:pb-24"
+        className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center pt-24 sm:pt-28 pb-12 sm:pb-16 lg:pt-36 lg:pb-24"
       >
         {/* Resplandores orgánicos de ambiente */}
-        <div className="pointer-events-none absolute top-12 right-0 w-[540px] h-[540px] rounded-full bg-accent/10 blur-3xl"></div>
-        <div className="pointer-events-none absolute bottom-0 left-0 w-[480px] h-[480px] rounded-full bg-primary/10 blur-3xl"></div>
+        <div className="pointer-events-none absolute top-12 right-0 w-72 sm:w-[540px] h-72 sm:h-[540px] rounded-full bg-accent/10 blur-3xl"></div>
+        <div className="pointer-events-none absolute bottom-0 left-0 w-64 sm:w-[480px] h-64 sm:h-[480px] rounded-full bg-primary/10 blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
             
             {/* Columna Izquierda: Copy Principal & Acciones */}
             <motion.div
@@ -180,32 +182,32 @@ export default function Hero() {
               transition={{ duration: 0.7, ease: 'easeOut' }}
               className="lg:col-span-6 max-w-2xl min-w-0"
             >
-              <h1 className="font-heading text-3xl sm:text-5xl xl:text-6xl font-extrabold text-primary leading-[1.14] tracking-tight mb-6">
+              <h1 className="font-heading text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-extrabold text-primary leading-[1.14] tracking-tight mb-5 sm:mb-6">
                 La tecnología que le devuelve la{' '}
-                <span className="font-serif italic font-normal text-accent text-4xl sm:text-6xl xl:text-[4.25rem] px-0.5">
+                <span className="font-serif italic font-normal text-accent text-3xl sm:text-5xl lg:text-5xl xl:text-[4.25rem] px-0.5">
                   tranquilidad
                 </span>{' '}
                 a la salud.
               </h1>
 
-              <p className="text-base sm:text-lg xl:text-xl text-text-muted mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg xl:text-xl text-text-muted mb-6 sm:mb-8 leading-relaxed">
                 En <strong className="text-primary font-semibold">Vitality</strong> diseñamos tecnología pensada para devolverle el valor al tiempo en cada consulta médica. Acompañamos a consultorios, profesionales y pacientes con herramientas simples, humanas y accesibles que agilizan la atención diaria y acercan la salud a todas las personas.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3.5 sm:items-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-3.5 sm:items-center">
                 <a
                   href={TEMPUSCARE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"
                 >
-                  <Button variant="primary" className="w-full sm:w-auto gap-2">
+                  <Button variant="primary" className="w-full sm:w-auto justify-center gap-2">
                     <span>Conocer TempusCare</span>
                     <ExternalLink size={17} />
                   </Button>
                 </a>
                 <a href="#simulador-app" className="w-full sm:w-auto">
-                  <Button variant="secondary" className="w-full sm:w-auto">
+                  <Button variant="secondary" className="w-full sm:w-auto justify-center">
                     Probar la aplicación
                   </Button>
                 </a>
@@ -217,11 +219,11 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
-              className="lg:col-span-6 relative w-full flex items-center justify-center min-w-0"
+              className="lg:col-span-6 relative w-full flex items-center justify-center min-w-0 pt-4 lg:pt-0"
             >
-              <div className="relative w-64 sm:w-80 md:w-96 aspect-[1129/1440] mx-auto flex items-center justify-center">
+              <div className="relative w-56 xs:w-64 sm:w-80 md:w-96 max-w-full aspect-[1129/1440] mx-auto flex items-center justify-center">
                 {/* Halo luminoso sutil respirando detrás */}
-                <div className="pointer-events-none absolute -inset-6 bg-gradient-to-tr from-accent/25 via-primary/20 to-teal-300/25 blur-3xl rounded-full animate-pulse" />
+                <div className="pointer-events-none absolute -inset-4 sm:-inset-6 bg-gradient-to-tr from-accent/25 via-primary/20 to-teal-300/25 blur-3xl rounded-full animate-pulse" />
 
                 {/* Base del Isotipo Oficial de TempusCare en alta resolución (1129x1440) y con fondo transparente */}
                 <img
@@ -330,26 +332,26 @@ export default function Hero() {
          ======================================================== */}
       <section
         id="simulador-app"
-        className="py-16 lg:py-24 relative border-t border-gray-200/60 bg-gradient-to-b from-white via-background-light/70 to-white"
+        className="py-14 sm:py-16 lg:py-24 relative border-t border-gray-200/60 bg-gradient-to-b from-white via-background-light/70 to-white"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Encabezado destacado con el Slogan Oficial de TempusCare (Sin etiquetas verdes) */}
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="font-serif italic text-3xl sm:text-5xl md:text-[3.25rem] text-primary font-normal leading-tight mb-4">
+          {/* Encabezado destacado con el Slogan Oficial de TempusCare */}
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+            <h2 className="font-serif italic text-2xl sm:text-4xl md:text-5xl text-primary font-normal leading-tight mb-3 sm:mb-4">
               “Cuidamos tu tiempo, te cuidamos a vos.”
             </h2>
-            <p className="text-base sm:text-lg text-text-muted leading-relaxed">
+            <p className="text-sm sm:text-base lg:text-lg text-text-muted leading-relaxed">
               Probá cómo pacientes, secretarías y profesionales experimentan TempusCare todos los días con una interfaz fluida, accesible y sin fricciones.
             </p>
           </div>
 
           {/* Bloque interactivo que simula la app TempusCare con scroll reveal */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.75, ease: 'easeOut' }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
             className="w-full max-w-4xl mx-auto"
           >
             {/* Contenedor con inclinación 3D sutil */}
@@ -362,41 +364,41 @@ export default function Hero() {
               }}
               transition={{ type: 'spring', stiffness: 260, damping: 22 }}
               style={{ transformPerspective: 1200 }}
-              className="hc-card bg-white rounded-3xl shadow-2xl border border-gray-200/90 overflow-hidden"
+              className="hc-card bg-white rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-gray-200/90 overflow-hidden"
             >
               {/* Barra Superior del Sistema */}
-              <div className="bg-primary text-white px-4 sm:px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
+              <div className="bg-primary text-white px-3.5 sm:px-5 py-3 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
                   <span className="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                  <span className="ml-2 text-xs font-semibold tracking-wide text-blue-100 flex items-center gap-1.5">
+                  <span className="ml-1 sm:ml-2 text-xs font-semibold tracking-wide text-blue-100 flex items-center gap-1.5">
                     <Activity size={14} className="text-accent-light" />
-                    TempusCare · Vista Interactiva
+                    <span>TempusCare · Vista Interactiva</span>
                   </span>
                 </div>
-                <span className="text-[11px] bg-white/15 px-2.5 py-0.5 rounded-full font-medium text-blue-50">
+                <span className="text-[10px] sm:text-[11px] bg-white/15 px-2.5 py-0.5 rounded-full font-medium text-blue-50">
                   San Miguel de Tucumán
                 </span>
               </div>
 
-              {/* Selector de 3 Pestañas Orientadas al Cliente (Paciente / Recepción y Sala de Espera / Médico) */}
+              {/* Selector de 3 Pestañas Orientadas al Cliente (Paciente / Recepción / Médico) */}
               <div
                 role="tablist"
                 aria-label="Vistas del sistema TempusCare"
-                className="grid grid-cols-3 gap-1.5 p-2 bg-background-light border-b border-gray-200/80"
+                className="grid grid-cols-3 gap-1 sm:gap-1.5 p-1.5 sm:p-2 bg-background-light border-b border-gray-200/80"
               >
                 <button
                   role="tab"
                   aria-selected={activeTab === 'paciente'}
                   onClick={() => setActiveTab('paciente')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     activeTab === 'paciente'
-                      ? 'bg-white text-primary shadow-sm border border-gray-200/80'
+                      ? 'bg-white text-primary shadow-xs border border-gray-200/80'
                       : 'text-text-muted hover:text-primary hover:bg-white/50'
                   }`}
                 >
-                  <UserCheck size={15} className={activeTab === 'paciente' ? 'text-accent' : ''} />
+                  <UserCheck size={15} className={`shrink-0 ${activeTab === 'paciente' ? 'text-accent' : ''}`} />
                   <span>Paciente</span>
                 </button>
 
@@ -404,33 +406,36 @@ export default function Hero() {
                   role="tab"
                   aria-selected={activeTab === 'recepcion'}
                   onClick={() => setActiveTab('recepcion')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     activeTab === 'recepcion'
-                      ? 'bg-white text-primary shadow-sm border border-gray-200/80'
+                      ? 'bg-white text-primary shadow-xs border border-gray-200/80'
                       : 'text-text-muted hover:text-primary hover:bg-white/50'
                   }`}
                 >
-                  <Columns3 size={15} className={activeTab === 'recepcion' ? 'text-accent' : ''} />
-                  <span>Recepción y Sala de Espera</span>
+                  <Columns3 size={15} className={`shrink-0 ${activeTab === 'recepcion' ? 'text-accent' : ''}`} />
+                  <span className="truncate">
+                    <span>Recepción</span>
+                    <span className="hidden sm:inline"> y Sala de Espera</span>
+                  </span>
                 </button>
 
                 <button
                   role="tab"
                   aria-selected={activeTab === 'medico'}
                   onClick={() => setActiveTab('medico')}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     activeTab === 'medico'
-                      ? 'bg-white text-primary shadow-sm border border-gray-200/80'
+                      ? 'bg-white text-primary shadow-xs border border-gray-200/80'
                       : 'text-text-muted hover:text-primary hover:bg-white/50'
                   }`}
                 >
-                  <Stethoscope size={15} className={activeTab === 'medico' ? 'text-accent' : ''} />
+                  <Stethoscope size={15} className={`shrink-0 ${activeTab === 'medico' ? 'text-accent' : ''}`} />
                   <span>Médico</span>
                 </button>
               </div>
 
               {/* Contenido Dinámico de las 3 Pestañas */}
-              <div className="p-4 sm:p-6 min-h-[380px] flex flex-col justify-between bg-white">
+              <div className="p-3.5 sm:p-6 min-h-[380px] flex flex-col justify-between bg-white">
                 <AnimatePresence initial={false} mode="wait">
                   {activeTab === 'paciente' && (
                     <motion.div
@@ -470,22 +475,22 @@ export default function Hero() {
                       </div>
 
                       {/* Tarjeta del Profesional en SMT */}
-                      <div className="p-4 rounded-2xl bg-background-light/80 border border-gray-200/80 space-y-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent text-white font-heading font-bold text-lg flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="p-3 sm:p-4 rounded-2xl bg-background-light/80 border border-gray-200/80 space-y-3">
+                        <div className="flex items-start justify-between gap-2.5">
+                          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-primary to-accent text-white font-heading font-bold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-xs">
                               VM
                             </div>
-                            <div>
-                              <h3 className="font-heading font-bold text-primary text-base leading-snug">
+                            <div className="min-w-0">
+                              <h3 className="font-heading font-bold text-primary text-sm sm:text-base leading-snug truncate">
                                 Dra. Valeria Medina
                               </h3>
-                              <p className="text-xs text-text-muted font-medium">
+                              <p className="text-xs text-text-muted font-medium truncate">
                                 Cardiología Clínica · MP 4892
                               </p>
-                              <p className="text-xs text-text-muted flex items-center gap-1 mt-0.5">
+                              <p className="text-[11px] sm:text-xs text-text-muted flex items-center gap-1 mt-0.5 truncate">
                                 <MapPin size={12} className="text-accent shrink-0" />
-                                <span>Barrio Norte, San Miguel de Tucumán</span>
+                                <span className="truncate">Barrio Norte, San Miguel de Tucumán</span>
                               </p>
                             </div>
                           </div>
@@ -511,7 +516,7 @@ export default function Hero() {
                             <Clock size={14} className="text-accent" />
                             Seleccioná un horario para simular reserva:
                           </span>
-                          <span className="text-[11px] text-text-muted font-normal">Clic para reservar</span>
+                          <span className="text-[11px] text-text-muted font-normal hidden xs:inline">Clic para reservar</span>
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                           {INITIAL_SLOTS.map((slot) => {
@@ -521,7 +526,7 @@ export default function Hero() {
                                 key={slot.id}
                                 type="button"
                                 onClick={() => setReservedSlot(slot.id)}
-                                className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex sm:flex-col items-center justify-between sm:justify-center px-3 sm:px-2 ${
+                                className={`p-2 sm:p-2.5 rounded-xl border text-center transition-all cursor-pointer flex sm:flex-col items-center justify-between sm:justify-center px-3 sm:px-2 ${
                                   isReserved
                                     ? 'bg-emerald-600 text-white border-emerald-600 shadow-md sm:scale-[1.02]'
                                     : 'bg-white text-primary border-gray-200 hover:border-accent hover:bg-accent/5'
@@ -549,14 +554,14 @@ export default function Hero() {
                       </div>
 
                       {/* Confirmación en vivo */}
-                      <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5 flex items-center justify-between text-xs text-emerald-900">
-                        <div className="flex items-center gap-2">
+                      <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-3 sm:px-3.5 py-2.5 flex items-center justify-between text-xs text-emerald-900 gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
                           <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-                          <span>
+                          <span className="truncate">
                             Turno <strong>{reservedSlot} hs</strong> confirmado con <strong>{selectedOS}</strong>.
                           </span>
                         </div>
-                        <span className="font-bold text-[11px] uppercase tracking-wider text-emerald-700 shrink-0 ml-2">
+                        <span className="font-bold text-[10px] sm:text-[11px] uppercase tracking-wider text-emerald-700 shrink-0">
                           Activo
                         </span>
                       </div>
@@ -592,7 +597,7 @@ export default function Hero() {
                           }`}
                         >
                           <Plus size={14} />
-                          <span>{walkInAdded ? 'Quitar Sobreturno' : 'Ingreso Rápido / Sobreturno'}</span>
+                          <span>{walkInAdded ? 'Quitar Sobreturno' : 'Ingreso Rápido'}</span>
                         </button>
                       </div>
 
@@ -682,8 +687,8 @@ export default function Hero() {
                         </div>
                       </div>
 
-                      <div className="text-xs text-text-muted bg-background-light px-3 py-2 rounded-xl flex items-center justify-between">
-                        <span>Flujo de admisión en vivo sin demoras</span>
+                      <div className="text-xs text-text-muted bg-background-light px-3 py-2 rounded-xl flex flex-wrap items-center justify-between gap-1">
+                        <span>Flujo de admisión en vivo</span>
                         <span className="font-bold text-primary">Sincronización instantánea</span>
                       </div>
                     </motion.div>
@@ -729,11 +734,11 @@ export default function Hero() {
 
                       {/* Ficha Paciente + Línea de Tiempo */}
                       <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-accent/10 border border-accent/20 text-xs">
-                        <div>
+                        <div className="truncate">
                           <span className="font-bold text-primary">Paciente: Marta Rodríguez (68a)</span>
-                          <span className="text-text-muted ml-2">· PAMI · HTA Crónica</span>
+                          <span className="text-text-muted ml-2 hidden xs:inline">· PAMI · HTA Crónica</span>
                         </div>
-                        <span className="font-bold text-accent hidden sm:inline">HCE #00492</span>
+                        <span className="font-bold text-accent shrink-0 ml-2">HCE #00492</span>
                       </div>
 
                       {/* Línea de tiempo de evoluciones */}
@@ -757,7 +762,7 @@ export default function Hero() {
                 </AnimatePresence>
 
                 {/* Pie de la tarjeta interactiva con enlace directo */}
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
                   <span className="text-text-muted font-medium">
                     Simulación interactiva oficial de <strong className="text-primary font-semibold">TempusCare</strong>
                   </span>
@@ -765,7 +770,7 @@ export default function Hero() {
                     href={TEMPUSCARE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-bold text-accent hover:text-primary inline-flex items-center gap-1 transition-colors"
+                    className="font-bold text-accent hover:text-primary inline-flex items-center gap-1 transition-colors shrink-0"
                   >
                     <span>Abrir aplicación</span>
                     <ChevronRight size={14} />

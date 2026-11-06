@@ -40,13 +40,13 @@ export default function Diferenciales() {
   ];
 
   return (
-    <section className="py-24 bg-white border-t border-gray-100 relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-24 bg-white border-t border-gray-100 relative overflow-hidden">
       {/* Sutil halo decorativo */}
-      <div className="pointer-events-none absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute top-1/2 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-accent/5 rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={revealRef}>
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight">
+        <div className="text-center mb-10 sm:mb-16 max-w-3xl mx-auto">
+          <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary mb-3 sm:mb-4 tracking-tight">
             Por qué elegir Vitality & TempusCare
           </h2>
           <p className="text-base sm:text-lg text-text-muted leading-relaxed">
@@ -54,7 +54,7 @@ export default function Diferenciales() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {diferencias.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -65,20 +65,20 @@ export default function Diferenciales() {
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="hc-card group relative rounded-3xl p-7 bg-background-light/70 hover:bg-white border border-gray-200/80 hover:border-accent/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="hc-card group relative rounded-3xl p-6 sm:p-7 bg-background-light/70 hover:bg-white border border-gray-200/80 hover:border-accent/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Resplandor dinámico en hover */}
                 <div className="pointer-events-none absolute -top-12 -right-12 w-32 h-32 bg-accent/10 rounded-full blur-2xl group-hover:bg-accent/25 transition-colors duration-500" />
 
                 <div>
                   {/* Encabezado con Ícono animado */}
-                  <div className="mb-5">
-                    <div className="w-13 h-13 rounded-2xl bg-white shadow-xs border border-gray-100 flex items-center justify-center text-secondary group-hover:bg-accent group-hover:text-white transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3 shrink-0">
+                  <div className="mb-4 sm:mb-5">
+                    <div className="w-12 h-12 rounded-2xl bg-white shadow-xs border border-gray-100 flex items-center justify-center text-secondary group-hover:bg-accent group-hover:text-white transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3 shrink-0">
                       <Icon size={24} />
                     </div>
                   </div>
 
-                  <h3 className="font-heading font-bold text-primary mb-2.5 text-lg sm:text-xl leading-snug">
+                  <h3 className="font-heading font-bold text-primary mb-2 text-lg sm:text-xl leading-snug">
                     {item.titulo}
                   </h3>
 

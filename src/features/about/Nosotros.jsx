@@ -5,17 +5,17 @@ export default function Nosotros() {
   const revealRef = useScrollReveal();
 
   return (
-    <section id="nosotros" className="py-24 bg-white relative overflow-hidden">
+    <section id="nosotros" className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">
       {/* Sutiles acentos de fondo */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-accent/5 rounded-full blur-3xl"></div>
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-[500px] lg:w-[700px] h-[350px] bg-accent/5 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={revealRef}>
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary mb-8 tracking-tight">
+          <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary mb-6 sm:mb-8 tracking-tight">
             El origen de nuestra vocación en Tucumán
           </h2>
 
-          <div className="space-y-6 text-base sm:text-lg text-text-muted leading-relaxed">
+          <div className="space-y-5 sm:space-y-6 text-base sm:text-lg text-text-muted leading-relaxed">
             <p>
               Vitality nació al observar una realidad cotidiana en los consultorios de nuestra provincia: profesionales desbordados por tareas administrativas y pacientes enfrentando largas esperas o barreras para conseguir un turno médico.
             </p>

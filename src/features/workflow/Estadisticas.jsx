@@ -44,18 +44,20 @@ function AnimatedCounter({ end, duration = 2000 }) {
 
 export default function Estadisticas() {
   return (
-    <section className="py-24 bg-gradient-to-br from-primary to-secondary relative overflow-hidden">
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl"></div>
+    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-primary to-secondary relative overflow-hidden">
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-72 sm:w-96 h-72 sm:h-96 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 text-center">
           {ESTADISTICAS.map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center">
-              <div className="text-5xl md:text-6xl font-extrabold text-white mb-4 flex items-baseline">
+              <div className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white mb-2 sm:mb-3 flex items-baseline">
                 <AnimatedCounter end={stat.valor} />
                 <span className="text-accent">{stat.sufijo}</span>
               </div>
-              <p className="text-blue-100 font-medium max-w-xs">{stat.descripcion}</p>
+              <p className="text-blue-100 text-xs sm:text-sm md:text-base font-medium max-w-xs leading-relaxed">
+                {stat.descripcion}
+              </p>
             </div>
           ))}
         </div>

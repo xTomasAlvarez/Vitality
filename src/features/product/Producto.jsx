@@ -127,30 +127,31 @@ export default function Producto() {
   };
 
   return (
-    <section id="producto" className="py-24 bg-background-light relative overflow-hidden">
+    <section id="producto" className="py-16 sm:py-20 lg:py-24 bg-background-light relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={revealRef}>
         
-        {/* Encabezado de Producto (Sin etiquetas técnicas) */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
+        {/* Encabezado de Producto */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 sm:mb-14 gap-6">
           <div className="max-w-3xl">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-tight">
+            <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-tight">
               TempusCare: nuestra solución integral para la{' '}
-              <span className="font-serif italic font-normal text-accent text-4xl sm:text-5xl md:text-[3.5rem]">
+              <span className="font-serif italic font-normal text-accent text-3xl sm:text-5xl md:text-[3.5rem]">
                 salud privada
               </span>
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
               Explorá los 5 módulos diseñados en nuestra plataforma para conectar pacientes, secretarías y médicos en toda la provincia de Tucumán.
             </p>
           </div>
 
-          <div className="shrink-0">
+          <div className="shrink-0 w-full sm:w-auto">
             <a
               href={TEMPUSCARE_URL}
               target="_blank"
               rel="noopener noreferrer"
+              className="w-full sm:w-auto block"
             >
-              <Button variant="primary" className="gap-2">
+              <Button variant="primary" className="w-full sm:w-auto justify-center gap-2">
                 <span>Ver la plataforma</span>
                 <ExternalLink size={17} />
               </Button>
@@ -159,7 +160,7 @@ export default function Producto() {
         </div>
 
         {/* BENTO GRID ASIMÉTRICO DE 5 TARJETAS INTERACTIVAS */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
 
           {/* =========================================================
               BENTO 1: Turnero Multi-Institucional y Gestión en Espera (7 cols)
@@ -167,13 +168,13 @@ export default function Producto() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.25 }}
-            className="hc-card lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
+            className="hc-card lg:col-span-7 bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-                  <Columns3 size={15} className="text-primary" />
-                  Módulo 01 · Agenda & Recepción
+                  <Columns3 size={15} className="text-primary shrink-0" />
+                  <span>Módulo 01 · Agenda & Recepción</span>
                 </span>
                 <span className="text-xs font-medium text-text-muted">
                   Sin superposición de turnos
@@ -183,16 +184,16 @@ export default function Producto() {
               <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-primary mb-2">
                 Turnero Multi-Institucional y Gestión de Pacientes en Espera
               </h3>
-              <p className="text-sm sm:text-base text-text-muted mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base text-text-muted mb-5 sm:mb-6 leading-relaxed">
                 Un mismo profesional atiende en distintos consultorios y clínicas sin superponer horarios. Secretaría gestiona el flujo diario con recepción en vivo y carga rápida de sobreturnos.
               </p>
 
               {/* Selector interactivo de institución */}
-              <div className="bg-background-light p-3.5 rounded-2xl border border-gray-200/80 mb-4">
+              <div className="bg-background-light p-3 sm:p-3.5 rounded-2xl border border-gray-200/80 mb-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                   <span className="text-xs font-bold text-primary flex items-center gap-1.5">
-                    <Building2 size={15} className="text-accent" />
-                    Convivencia de Agendas por Sede:
+                    <Building2 size={15} className="text-accent shrink-0" />
+                    <span>Convivencia de Agendas por Sede:</span>
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {['Todas las sedes (Unificado)', 'Sede SMT Centro', 'Sede Yerba Buena'].map((sede) => (
@@ -213,7 +214,7 @@ export default function Producto() {
                 </div>
 
                 {/* Mini flujo de recepción en vivo + Bloques horarios */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
                   <div className="bg-white p-3 rounded-xl border border-gray-200/80">
                     <div className="flex items-center justify-between text-xs font-bold text-amber-700 mb-1.5">
                       <span>● En Espera (3)</span>
@@ -244,9 +245,9 @@ export default function Producto() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-text-muted pt-3 border-t border-gray-100">
-              <span>Vista activa: <strong className="text-primary">{selectedSedeAgenda}</strong></span>
-              <span className="font-bold text-accent">Sincronización en tiempo real</span>
+            <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-text-muted pt-3 border-t border-gray-100">
+              <span className="truncate">Vista activa: <strong className="text-primary">{selectedSedeAgenda}</strong></span>
+              <span className="font-bold text-accent shrink-0">Sincronización en tiempo real</span>
             </div>
           </motion.article>
 
@@ -256,13 +257,13 @@ export default function Producto() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.25 }}
-            className="hc-card lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
+            className="hc-card lg:col-span-5 bg-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
           >
             <div>
-              <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-                  <FileText size={15} className="text-primary" />
-                  Módulo 02 · Historia Clínica
+                  <FileText size={15} className="text-primary shrink-0" />
+                  <span>Módulo 02 · Historia Clínica</span>
                 </span>
                 <div className="flex gap-1">
                   {[
@@ -289,7 +290,7 @@ export default function Producto() {
               <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-primary mb-2">
                 Historia Clínica Unificada y Línea de Tiempo
               </h3>
-              <p className="text-sm text-text-muted mb-5 leading-relaxed">
+              <p className="text-sm text-text-muted mb-4 sm:mb-5 leading-relaxed">
                 Trazabilidad longitudinal de evoluciones médicas, signos vitales y estudios adjuntos por paciente a través de la Línea de Tiempo del Paciente.
               </p>
 
@@ -327,10 +328,10 @@ export default function Producto() {
               </div>
             </div>
 
-            <div className="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-text-muted">
+            <div className="mt-4 sm:mt-5 pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-1 text-xs text-text-muted">
               <span className="flex items-center gap-1 font-medium text-primary">
-                <ShieldCheck size={14} className="text-accent" />
-                Registro seguro con firma de profesional
+                <ShieldCheck size={14} className="text-accent shrink-0" />
+                <span>Registro seguro con firma de profesional</span>
               </span>
               <span className="font-bold">Ley 26.529</span>
             </div>
@@ -342,13 +343,13 @@ export default function Producto() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.25 }}
-            className="hc-card lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
+            className="hc-card lg:col-span-4 bg-white rounded-3xl p-5 sm:p-7 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-                  <SlidersHorizontal size={15} className="text-primary" />
-                  Módulo 03 · Coberturas
+                  <SlidersHorizontal size={15} className="text-primary shrink-0" />
+                  <span>Módulo 03 · Coberturas</span>
                 </span>
               </div>
 
@@ -381,9 +382,9 @@ export default function Producto() {
 
               {/* Switch interactivo de Filtro sin Bloqueo */}
               <div className="p-3 rounded-2xl bg-accent/10 border border-accent/25 flex items-center justify-between gap-3">
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs font-bold text-primary">Filtro Opcional sin Bloqueo</p>
-                  <p className="text-[11px] text-text-muted">
+                  <p className="text-[11px] text-text-muted leading-snug">
                     {allowUnlistedOS
                       ? 'Permite reservar avisando modalidad Particular / Copago'
                       : 'Mostrando únicamente convenios directos'}
@@ -420,13 +421,13 @@ export default function Producto() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.25 }}
-            className="hc-card lg:col-span-4 bg-gradient-to-br from-primary to-secondary text-white rounded-3xl p-6 sm:p-7 shadow-lg hover:shadow-2xl border border-primary/20 flex flex-col justify-between transition-shadow"
+            className="hc-card lg:col-span-4 bg-gradient-to-br from-primary to-secondary text-white rounded-3xl p-5 sm:p-7 shadow-lg hover:shadow-2xl border border-primary/20 flex flex-col justify-between transition-shadow"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white">
-                  <Ear size={15} className="text-accent-light" />
-                  Módulo 04 · Diferencial de Inclusión
+                  <Ear size={15} className="text-accent-light shrink-0" />
+                  <span>Módulo 04 · Inclusión</span>
                 </span>
                 <span className="text-xs font-bold text-accent-light">
                   WCAG 2.1 AAA
@@ -436,31 +437,31 @@ export default function Producto() {
               <h3 className="font-heading text-xl font-extrabold text-white mb-2">
                 Accesibilidad Nativa Real
               </h3>
-              <p className="text-sm text-blue-100 mb-5 leading-relaxed">
+              <p className="text-sm text-blue-100 mb-4 sm:mb-5 leading-relaxed">
                 Diseñada desde la base para personas mayores y usuarios con discapacidad visual, auditiva o motriz. Controles limpios en vivo:
               </p>
 
-              {/* Botones y controles interactivos limpios y directos (Sin cartel descriptivo) */}
-              <div className="grid grid-cols-2 gap-2.5 mb-4">
-                {/* 1. Pausar Animaciones / Reducción de Movimiento */}
+              {/* Botones y controles interactivos limpios y directos */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-4">
+                {/* 1. Pausar Animaciones */}
                 <button
                   type="button"
                   role="switch"
                   aria-checked={isMotionReduced}
                   onClick={toggleReduceMotion}
-                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                  className={`p-2.5 sm:p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border min-w-0 ${
                     isMotionReduced
                       ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
                       : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
-                    <PauseCircle size={18} className={isMotionReduced ? 'text-accent' : 'text-accent-light'} />
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isMotionReduced ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                    <PauseCircle size={18} className={`shrink-0 ${isMotionReduced ? 'text-accent' : 'text-accent-light'}`} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${isMotionReduced ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
                       {isMotionReduced ? 'Activo ✓' : 'Probar'}
                     </span>
                   </div>
-                  <span className="leading-tight">Pausar Animaciones</span>
+                  <span className="leading-tight truncate">Pausar Animaciones</span>
                 </button>
 
                 {/* 2. Alto Contraste AAA */}
@@ -469,19 +470,19 @@ export default function Producto() {
                   role="switch"
                   aria-checked={isHighContrastActive}
                   onClick={toggleHighContrast}
-                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                  className={`p-2.5 sm:p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border min-w-0 ${
                     isHighContrastActive
                       ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
                       : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
-                    <Contrast size={18} className={isHighContrastActive ? 'text-accent' : 'text-accent-light'} />
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isHighContrastActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                    <Contrast size={18} className={`shrink-0 ${isHighContrastActive ? 'text-accent' : 'text-accent-light'}`} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${isHighContrastActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
                       {isHighContrastActive ? 'Activo ✓' : 'Probar'}
                     </span>
                   </div>
-                  <span className="leading-tight">Alto Contraste</span>
+                  <span className="leading-tight truncate">Alto Contraste</span>
                 </button>
 
                 {/* 3. Lector de Pantalla */}
@@ -490,19 +491,19 @@ export default function Producto() {
                   role="switch"
                   aria-checked={screenReaderActive}
                   onClick={toggleScreenReader}
-                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                  className={`p-2.5 sm:p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border min-w-0 ${
                     screenReaderActive
                       ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
                       : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
-                    <Volume2 size={18} className={screenReaderActive ? 'text-accent' : 'text-accent-light'} />
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${screenReaderActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                    <Volume2 size={18} className={`shrink-0 ${screenReaderActive ? 'text-accent' : 'text-accent-light'}`} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${screenReaderActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
                       {screenReaderActive ? 'Activo ✓' : 'Probar'}
                     </span>
                   </div>
-                  <span className="leading-tight">Lector de Pantalla</span>
+                  <span className="leading-tight truncate">Lector de Pantalla</span>
                 </button>
 
                 {/* 4. Navegación por Teclado */}
@@ -511,26 +512,26 @@ export default function Producto() {
                   role="switch"
                   aria-checked={keyboardNavActive}
                   onClick={toggleKeyboardNav}
-                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                  className={`p-2.5 sm:p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border min-w-0 ${
                     keyboardNavActive
                       ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
                       : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                   }`}
                 >
                   <div className="flex items-center justify-between w-full">
-                    <Keyboard size={18} className={keyboardNavActive ? 'text-accent' : 'text-accent-light'} />
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${keyboardNavActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                    <Keyboard size={18} className={`shrink-0 ${keyboardNavActive ? 'text-accent' : 'text-accent-light'}`} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${keyboardNavActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
                       {keyboardNavActive ? 'Activo ✓' : 'Probar'}
                     </span>
                   </div>
-                  <span className="leading-tight">Navegación Teclado</span>
+                  <span className="leading-tight truncate">Navegación Teclado</span>
                 </button>
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/15 text-xs text-blue-100 flex justify-between">
+            <div className="mt-4 pt-3 border-t border-white/15 text-xs text-blue-100 flex flex-wrap items-center justify-between gap-1">
               <span>Widget disponible abajo a la izquierda ↙</span>
-              <span className="font-bold text-accent-light">100% Inclusivo</span>
+              <span className="font-bold text-accent-light shrink-0">100% Inclusivo</span>
             </div>
           </motion.article>
 
@@ -540,13 +541,13 @@ export default function Producto() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.25 }}
-            className="hc-card lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
+            className="hc-card lg:col-span-4 bg-white rounded-3xl p-5 sm:p-7 shadow-sm hover:shadow-xl border border-gray-200/80 flex flex-col justify-between transition-shadow"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-                  <MapPin size={15} className="text-primary" />
-                  Módulo 05 · Sedes & Opiniones
+                  <MapPin size={15} className="text-primary shrink-0" />
+                  <span>Módulo 05 · Sedes & Opiniones</span>
                 </span>
                 <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
                   <Star size={13} className="fill-amber-400 text-amber-400" />
@@ -562,7 +563,7 @@ export default function Producto() {
               </p>
 
               {/* Mini Mapa Interactivo de Tucumán */}
-              <div className="relative h-28 rounded-2xl bg-gradient-to-br from-blue-50 via-teal-50/60 to-background-light border border-gray-200/80 overflow-hidden mb-4 p-3 flex flex-col justify-between">
+              <div className="relative min-h-[7.5rem] h-auto rounded-2xl bg-gradient-to-br from-blue-50 via-teal-50/60 to-background-light border border-gray-200/80 overflow-hidden mb-4 p-3 flex flex-col justify-between gap-2.5">
                 {/* Retícula cartográfica estilizada */}
                 <div
                   className="pointer-events-none absolute inset-0 opacity-25"
@@ -603,7 +604,7 @@ export default function Producto() {
               </div>
 
               {/* Barras horizontales de Opiniones Verificadas */}
-              <div className="space-y-2.5 bg-background-light p-3.5 rounded-2xl border border-gray-200/70">
+              <div className="space-y-2.5 bg-background-light p-3 sm:p-3.5 rounded-2xl border border-gray-200/70">
                 <div className="flex flex-wrap items-center justify-between gap-1 text-xs">
                   <span className="font-bold text-primary">{selectedMapPin.nombre}</span>
                   <span className="text-[11px] text-text-muted">{selectedMapPin.zona}</span>
