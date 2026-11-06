@@ -15,8 +15,12 @@ export default function ComoTrabajamos() {
     <section id="workflow" className="py-24 bg-background-darker">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={revealRef}>
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-3">Enfoque Vitality</h2>
-          <h3 className="text-4xl font-extrabold text-primary">Cómo trabajamos</h3>
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary tracking-tight">
+            Cómo trabajamos
+          </h2>
+          <p className="mt-4 text-base sm:text-lg text-text-muted max-w-2xl mx-auto">
+            Un proceso ágil y centrado en las personas para transformar la atención médica en cada paso.
+          </p>
         </div>
 
         <div className="relative">
@@ -30,7 +34,7 @@ export default function ComoTrabajamos() {
                   {step.num}
                 </div>
                 <div className="text-center">
-                  <h4 className="font-bold text-lg text-primary mb-2">{step.title}</h4>
+                  <h3 className="font-bold text-lg text-primary mb-2">{step.title}</h3>
                   <p className="text-text-muted text-sm">{step.desc}</p>
                 </div>
               </div>

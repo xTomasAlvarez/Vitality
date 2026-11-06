@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import Button from '../../shared/ui/Button';
 import { TEMPUSCARE_URL } from '../../shared/data/data';
@@ -14,10 +14,9 @@ import {
   Volume2,
   Keyboard,
   Contrast,
-  Captions,
+  PauseCircle,
   Star,
   ExternalLink,
-  Activity,
   SlidersHorizontal
 } from 'lucide-react';
 
@@ -57,24 +56,83 @@ const SEDES_TUCUMAN = [
 export default function Producto() {
   const revealRef = useScrollReveal();
 
-  // Estados interactivos para los 5 Bentos
+  // Estados interactivos para los Bentos
   const [selectedSedeAgenda, setSelectedSedeAgenda] = useState('Todas las sedes (Unificado)');
   const [hceFilter, setHceFilter] = useState('todos');
   const [allowUnlistedOS, setAllowUnlistedOS] = useState(true);
-  const [activeA11yFeature, setActiveA11yFeature] = useState('screenreader');
   const [selectedMapPin, setSelectedMapPin] = useState(SEDES_TUCUMAN[0]);
+
+  // Estados de accesibilidad interactiva en Bento 4
+  const [isMotionReduced, setIsMotionReduced] = useState(false);
+  const [isHighContrastActive, setIsHighContrastActive] = useState(false);
+  const [screenReaderActive, setScreenReaderActive] = useState(false);
+  const [keyboardNavActive, setKeyboardNavActive] = useState(false);
+
+  useEffect(() => {
+    const checkState = () => {
+      const root = document.documentElement;
+      setIsMotionReduced(root.classList.contains('reduce-motion') || root.classList.contains('pause-animations'));
+      setIsHighContrastActive(root.classList.contains('high-contrast'));
+    };
+    checkState();
+
+    const handleReduceMotion = (e) => {
+      setIsMotionReduced(Boolean(e.detail?.isReducedMotion));
+    };
+    const handleHighContrast = (e) => {
+      setIsHighContrastActive(Boolean(e.detail?.highContrast));
+    };
+
+    window.addEventListener('vitality:reduce-motion', handleReduceMotion);
+    window.addEventListener('vitality:high-contrast', handleHighContrast);
+
+    return () => {
+      window.removeEventListener('vitality:reduce-motion', handleReduceMotion);
+      window.removeEventListener('vitality:high-contrast', handleHighContrast);
+    };
+  }, []);
+
+  const toggleReduceMotion = () => {
+    const root = document.documentElement;
+    const isNowReduced = !isMotionReduced;
+    if (isNowReduced) {
+      root.classList.add('reduce-motion');
+      root.classList.add('pause-animations');
+    } else {
+      root.classList.remove('reduce-motion');
+      root.classList.remove('pause-animations');
+    }
+    setIsMotionReduced(isNowReduced);
+    window.dispatchEvent(new CustomEvent('vitality:reduce-motion', { detail: { isReducedMotion: isNowReduced } }));
+  };
+
+  const toggleHighContrast = () => {
+    const root = document.documentElement;
+    const isNowHC = !isHighContrastActive;
+    if (isNowHC) {
+      root.classList.add('high-contrast');
+    } else {
+      root.classList.remove('high-contrast');
+    }
+    setIsHighContrastActive(isNowHC);
+    window.dispatchEvent(new CustomEvent('vitality:high-contrast', { detail: { highContrast: isNowHC } }));
+  };
+
+  const toggleScreenReader = () => {
+    setScreenReaderActive((prev) => !prev);
+  };
+
+  const toggleKeyboardNav = () => {
+    setKeyboardNavActive((prev) => !prev);
+  };
 
   return (
     <section id="producto" className="py-24 bg-background-light relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={revealRef}>
         
-        {/* Encabezado de Producto */}
+        {/* Encabezado de Producto (Sin etiquetas técnicas) */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-accent uppercase tracking-widest mb-3 bg-accent/10 px-3.5 py-1 rounded-full">
-              <Activity size={14} />
-              Arquitectura Full-Stack · Rama develop
-            </span>
             <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-tight">
               TempusCare: nuestra solución integral para la{' '}
               <span className="font-serif italic font-normal text-accent text-4xl sm:text-5xl md:text-[3.5rem]">
@@ -82,7 +140,7 @@ export default function Producto() {
               </span>
             </h2>
             <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
-              Explorá los 5 módulos reales construidos en nuestra plataforma para conectar pacientes, recepcionistas y médicos en toda la provincia de Tucumán.
+              Explorá los 5 módulos diseñados en nuestra plataforma para conectar pacientes, secretarías y médicos en toda la provincia de Tucumán.
             </p>
           </div>
 
@@ -104,7 +162,7 @@ export default function Producto() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
           {/* =========================================================
-              BENTO 1: Turnero Multi-Institucional y Kanban (7 columnas)
+              BENTO 1: Turnero Multi-Institucional y Gestión en Espera (7 cols)
              ========================================================= */}
           <motion.article
             whileHover={{ y: -3 }}
@@ -113,20 +171,20 @@ export default function Producto() {
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                  <Columns3 size={14} className="text-accent" />
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <Columns3 size={15} className="text-primary" />
                   Módulo 01 · Agenda & Recepción
                 </span>
-                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                  Sin solapamiento horario
+                <span className="text-xs font-medium text-text-muted">
+                  Sin superposición de turnos
                 </span>
               </div>
 
               <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-primary mb-2">
-                Turnero Multi-Institucional y Recepción Kanban
+                Turnero Multi-Institucional y Gestión de Pacientes en Espera
               </h3>
               <p className="text-sm sm:text-base text-text-muted mb-6 leading-relaxed">
-                Un mismo profesional atiende en distintos consultorios y clínicas sin superponer turnos. Secretaría gestiona el flujo diario en tiempo real con columnas Kanban y carga rápida de sobreturnos.
+                Un mismo profesional atiende en distintos consultorios y clínicas sin superponer horarios. Secretaría gestiona el flujo diario con recepción en vivo y carga rápida de sobreturnos.
               </p>
 
               {/* Selector interactivo de institución */}
@@ -154,7 +212,7 @@ export default function Producto() {
                   </div>
                 </div>
 
-                {/* Mini flujo Kanban + Bloques horarios */}
+                {/* Mini flujo de recepción en vivo + Bloques horarios */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   <div className="bg-white p-3 rounded-xl border border-gray-200/80">
                     <div className="flex items-center justify-between text-xs font-bold text-amber-700 mb-1.5">
@@ -188,12 +246,12 @@ export default function Producto() {
 
             <div className="flex items-center justify-between text-xs text-text-muted pt-3 border-t border-gray-100">
               <span>Vista activa: <strong className="text-primary">{selectedSedeAgenda}</strong></span>
-              <span className="font-bold text-accent">Sincronización WebSockets / REST</span>
+              <span className="font-bold text-accent">Sincronización en tiempo real</span>
             </div>
           </motion.article>
 
           {/* =========================================================
-              BENTO 2: Historia Clínica Unificada y Línea de Tiempo (5 columnas)
+              BENTO 2: Historia Clínica Unificada y Línea de Tiempo (5 cols)
              ========================================================= */}
           <motion.article
             whileHover={{ y: -3 }}
@@ -202,9 +260,9 @@ export default function Producto() {
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                  <FileText size={14} className="text-accent" />
-                  Módulo 02 · HCE Trazable
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <FileText size={15} className="text-primary" />
+                  Módulo 02 · Historia Clínica
                 </span>
                 <div className="flex gap-1">
                   {[
@@ -232,7 +290,7 @@ export default function Producto() {
                 Historia Clínica Unificada y Línea de Tiempo
               </h3>
               <p className="text-sm text-text-muted mb-5 leading-relaxed">
-                Trazabilidad longitudinal de evoluciones médicas, signos vitales y estudios adjuntos por paciente a través de <code className="text-primary font-bold">PatientTimeline</code>.
+                Trazabilidad longitudinal de evoluciones médicas, signos vitales y estudios adjuntos por paciente a través de la Línea de Tiempo del Paciente.
               </p>
 
               {/* Línea de tiempo interactiva */}
@@ -272,14 +330,14 @@ export default function Producto() {
             <div className="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-text-muted">
               <span className="flex items-center gap-1 font-medium text-primary">
                 <ShieldCheck size={14} className="text-accent" />
-                Registro inmutable con firma de profesional
+                Registro seguro con firma de profesional
               </span>
               <span className="font-bold">Ley 26.529</span>
             </div>
           </motion.article>
 
           {/* =========================================================
-              BENTO 3: Parametrización de Obras Sociales (4 columnas)
+              BENTO 3: Parametrización de Obras Sociales (4 cols)
              ========================================================= */}
           <motion.article
             whileHover={{ y: -3 }}
@@ -288,8 +346,8 @@ export default function Producto() {
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                  <SlidersHorizontal size={14} className="text-accent" />
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <SlidersHorizontal size={15} className="text-primary" />
                   Módulo 03 · Coberturas
                 </span>
               </div>
@@ -352,12 +410,12 @@ export default function Producto() {
 
             <div className="mt-4 pt-3 border-t border-gray-100 text-xs text-text-muted flex justify-between">
               <span>Transparencia arancelaria</span>
-              <span className="font-bold text-primary">0% rechazos en admisión</span>
+              <span className="font-bold text-primary">0% rechazos en recepción</span>
             </div>
           </motion.article>
 
           {/* =========================================================
-              BENTO 4: Accesibilidad Real - Diferencial (4 columnas)
+              BENTO 4: Accesibilidad Nativa Real (4 cols) - Controles Limpios
              ========================================================= */}
           <motion.article
             whileHover={{ y: -3 }}
@@ -366,11 +424,11 @@ export default function Producto() {
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-white/15 px-3 py-1 rounded-full backdrop-blur-xs">
-                  <Ear size={14} className="text-accent-light" />
-                  Módulo 04 · Nuestro Diferencial
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white">
+                  <Ear size={15} className="text-accent-light" />
+                  Módulo 04 · Diferencial de Inclusión
                 </span>
-                <span className="text-[11px] font-bold bg-accent text-white px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-accent-light">
                   WCAG 2.1 AAA
                 </span>
               </div>
@@ -378,83 +436,106 @@ export default function Producto() {
               <h3 className="font-heading text-xl font-extrabold text-white mb-2">
                 Accesibilidad Nativa Real
               </h3>
-              <p className="text-sm text-blue-100 mb-4 leading-relaxed">
-                Diseñada desde la base para adultos mayores y personas con discapacidad visual, auditiva o motriz.
+              <p className="text-sm text-blue-100 mb-5 leading-relaxed">
+                Diseñada desde la base para personas mayores y usuarios con discapacidad visual, auditiva o motriz. Controles limpios en vivo:
               </p>
 
-              {/* Botones de demo visual de accesibilidad */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                {[
-                  {
-                    id: 'screenreader',
-                    label: 'Lector de Pantalla',
-                    Icon: Volume2,
-                    demo: 'ARIA-Live: "Turno 10:15 hs con Dra. Medina disponible. Presione Enter para confirmar."',
-                  },
-                  {
-                    id: 'keyboard',
-                    label: 'Nav. por Teclado',
-                    Icon: Keyboard,
-                    demo: 'Foco visible [Tab] → [Shift+Tab] → [Enter] sin trampas de teclado en modales.',
-                  },
-                  {
-                    id: 'contrast',
-                    label: 'Alto Contraste',
-                    Icon: Contrast,
-                    demo: 'Relación de contraste > 10:1 y tipografía Atkinson Hyperlegible de grado médico.',
-                  },
-                  {
-                    id: 'captions',
-                    label: 'Subtitulado Visual',
-                    Icon: Captions,
-                    demo: 'Alertas visuales en pantalla para llamado en sala de espera y videoconsulta.',
-                  },
-                ].map((item) => {
-                  const Icon = item.Icon;
-                  const isSelected = activeA11yFeature === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setActiveA11yFeature(item.id)}
-                      className={`p-2.5 rounded-xl text-left text-xs font-bold transition-all cursor-pointer flex items-center gap-2 border ${
-                        isSelected
-                          ? 'bg-white text-primary border-white shadow-md'
-                          : 'bg-white/10 text-white border-white/15 hover:bg-white/20'
-                      }`}
-                    >
-                      <Icon size={15} className={`shrink-0 ${isSelected ? 'text-accent' : 'text-accent-light'}`} />
-                      <span className="leading-tight">{item.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+              {/* Botones y controles interactivos limpios y directos (Sin cartel descriptivo) */}
+              <div className="grid grid-cols-2 gap-2.5 mb-4">
+                {/* 1. Pausar Animaciones / Reducción de Movimiento */}
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={isMotionReduced}
+                  onClick={toggleReduceMotion}
+                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                    isMotionReduced
+                      ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
+                      : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <PauseCircle size={18} className={isMotionReduced ? 'text-accent' : 'text-accent-light'} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isMotionReduced ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                      {isMotionReduced ? 'Activo ✓' : 'Probar'}
+                    </span>
+                  </div>
+                  <span className="leading-tight">Pausar Animaciones</span>
+                </button>
 
-              {/* Consola de demostración en vivo */}
-              <div className="p-3 rounded-2xl bg-black/30 border border-white/15 text-xs text-blue-50 font-mono leading-relaxed">
-                {activeA11yFeature === 'screenreader' && (
-                  <span>🔊 ARIA-Live: &ldquo;Turno 10:15 hs con Dra. Medina disponible. Presione Enter para reservar.&rdquo;</span>
-                )}
-                {activeA11yFeature === 'keyboard' && (
-                  <span>⌨️ Flujo 100% operable con [Tab], [Flechas] y [Enter]. Anillo de foco de 3px activo.</span>
-                )}
-                {activeA11yFeature === 'contrast' && (
-                  <span>👁️ Modo AAA activo: Tipografía Atkinson Hyperlegible + contraste verificable en vivo.</span>
-                )}
-                {activeA11yFeature === 'captions' && (
-                  <span>💬 Subtítulos sincronizados y llamado visual en recepción sin depender de audio.</span>
-                )}
+                {/* 2. Alto Contraste AAA */}
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={isHighContrastActive}
+                  onClick={toggleHighContrast}
+                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                    isHighContrastActive
+                      ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
+                      : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <Contrast size={18} className={isHighContrastActive ? 'text-accent' : 'text-accent-light'} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isHighContrastActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                      {isHighContrastActive ? 'Activo ✓' : 'Probar'}
+                    </span>
+                  </div>
+                  <span className="leading-tight">Alto Contraste</span>
+                </button>
+
+                {/* 3. Lector de Pantalla */}
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={screenReaderActive}
+                  onClick={toggleScreenReader}
+                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                    screenReaderActive
+                      ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
+                      : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <Volume2 size={18} className={screenReaderActive ? 'text-accent' : 'text-accent-light'} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${screenReaderActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                      {screenReaderActive ? 'Activo ✓' : 'Probar'}
+                    </span>
+                  </div>
+                  <span className="leading-tight">Lector de Pantalla</span>
+                </button>
+
+                {/* 4. Navegación por Teclado */}
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={keyboardNavActive}
+                  onClick={toggleKeyboardNav}
+                  className={`p-3 rounded-2xl text-left text-xs font-bold transition-all cursor-pointer flex flex-col gap-1.5 border ${
+                    keyboardNavActive
+                      ? 'bg-white text-primary border-white shadow-lg ring-2 ring-accent'
+                      : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <Keyboard size={18} className={keyboardNavActive ? 'text-accent' : 'text-accent-light'} />
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${keyboardNavActive ? 'bg-primary text-white' : 'bg-white/20 text-white'}`}>
+                      {keyboardNavActive ? 'Activo ✓' : 'Probar'}
+                    </span>
+                  </div>
+                  <span className="leading-tight">Navegación Teclado</span>
+                </button>
               </div>
             </div>
 
             <div className="mt-4 pt-3 border-t border-white/15 text-xs text-blue-100 flex justify-between">
-              <span>Probá el widget abajo a la izquierda ↙</span>
+              <span>Widget disponible abajo a la izquierda ↙</span>
               <span className="font-bold text-accent-light">100% Inclusivo</span>
             </div>
           </motion.article>
 
           {/* =========================================================
-              BENTO 5: Geolocalización y Encuestas Verificadas (4 columnas)
+              BENTO 5: Geolocalización y Encuestas Verificadas (4 cols)
              ========================================================= */}
           <motion.article
             whileHover={{ y: -3 }}
@@ -463,9 +544,9 @@ export default function Producto() {
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                  <MapPin size={14} className="text-accent" />
-                  Módulo 05 · Geo & Calidad
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <MapPin size={15} className="text-primary" />
+                  Módulo 05 · Sedes & Opiniones
                 </span>
                 <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
                   <Star size={13} className="fill-amber-400 text-amber-400" />
@@ -474,10 +555,10 @@ export default function Producto() {
               </div>
 
               <h3 className="font-heading text-xl font-extrabold text-primary mb-2">
-                Geolocalización y Encuestas Verificadas
+                Geolocalización y Opiniones Verificadas
               </h3>
               <p className="text-sm text-text-muted mb-4 leading-relaxed">
-                Mapa interactivo de consultorios en el Gran San Miguel de Tucumán y métricas reales post-atención.
+                Mapa interactivo de consultorios en el Gran San Miguel de Tucumán y métricas de satisfacción reales post-atención.
               </p>
 
               {/* Mini Mapa Interactivo de Tucumán */}
@@ -521,7 +602,7 @@ export default function Producto() {
                 </div>
               </div>
 
-              {/* Barras horizontales de Encuestas Verificadas */}
+              {/* Barras horizontales de Opiniones Verificadas */}
               <div className="space-y-2.5 bg-background-light p-3.5 rounded-2xl border border-gray-200/70">
                 <div className="flex flex-wrap items-center justify-between gap-1 text-xs">
                   <span className="font-bold text-primary">{selectedMapPin.nombre}</span>
@@ -529,7 +610,7 @@ export default function Producto() {
                 </div>
 
                 {[
-                  { label: 'Puntualidad', value: selectedMapPin.puntualidad },
+                  { label: 'Puntualidad en Turnos', value: selectedMapPin.puntualidad },
                   { label: 'Atención en Recepción', value: selectedMapPin.atencion },
                   { label: 'Profesionalismo Médico', value: selectedMapPin.profesionalismo },
                 ].map((metric) => (
@@ -552,7 +633,7 @@ export default function Producto() {
             </div>
 
             <div className="mt-4 pt-3 border-t border-gray-100 text-xs text-text-muted flex justify-between">
-              <span>Solo pacientes con turno Finalizado</span>
+              <span>Solo pacientes con turno atendido</span>
               <span className="font-bold text-emerald-700">100% Verificadas</span>
             </div>
           </motion.article>

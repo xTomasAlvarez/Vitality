@@ -17,9 +17,9 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
     { name: 'Nosotros', href: '#nosotros' },
-    { name: 'Valores CUIDADO', href: '#valores' },
+    { name: 'Valores', href: '#valores' },
     { name: 'TempusCare', href: '#producto' },
-    { name: 'Cómo trabajamos', href: '#workflow' },
+    { name: 'Metodología', href: '#workflow' },
     { name: 'Equipo', href: '#equipo' },
     { name: 'Contacto', href: '#contacto' },
   ];
@@ -34,38 +34,39 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <a href="#inicio" className="flex items-center gap-2.5 group">
-            <div className="h-10 w-10 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform">
-              <img src="/vitality-removebg-preview.png" alt="Logo Vitality" className="w-full h-full object-contain" />
+        <div className="flex justify-between items-center gap-4">
+          {/* Logo y Marca a la izquierda */}
+          <a href="#inicio" className="flex items-center gap-3 group shrink-0">
+            <div className="h-11 sm:h-12 w-auto flex items-center justify-center group-hover:scale-105 transition-transform">
+              <img src="/vitality-removebg-preview.png" alt="Logo Vitality" className="h-11 sm:h-12 w-auto object-contain" />
             </div>
-            <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-primary leading-none">
+            <div className="flex flex-col items-start leading-none">
+              <span className="font-heading font-extrabold text-2xl tracking-tight text-primary leading-tight">
                 Vitality
               </span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-accent">
+              <span className="text-[11px] font-medium tracking-widest text-slate-500 uppercase mt-0.5">
                 HealthTech
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-6">
+          {/* Desktop Nav centrado y resumido */}
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-7">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-text-muted hover:text-primary font-semibold text-sm transition-colors"
+                className="relative font-heading font-medium tracking-wide text-[15px] text-text-muted hover:text-primary transition-colors py-1 group/link text-center whitespace-nowrap flex items-center justify-center"
               >
-                {link.name}
+                <span>{link.name}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent rounded-full transition-all duration-300 ease-out group-hover/link:w-full" />
               </a>
             ))}
             <a
               href={TEMPUSCARE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-accent hover:bg-accent-light text-white px-5 py-2.5 rounded-full font-heading font-bold text-sm transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 inline-flex items-center gap-1.5"
+              className="bg-accent hover:bg-accent-light text-white px-5 py-2.5 rounded-full font-heading font-bold text-sm tracking-wide transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap"
             >
               <span>Conocer TempusCare</span>
               <ExternalLink size={15} />
@@ -99,7 +100,7 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-4 py-2.5 text-text-main hover:bg-background-light hover:text-accent rounded-xl font-semibold transition-colors"
+              className="block px-4 py-2.5 text-text-main hover:bg-background-light hover:text-accent rounded-xl font-heading font-medium text-[15px] transition-colors text-center whitespace-nowrap"
             >
               {link.name}
             </a>

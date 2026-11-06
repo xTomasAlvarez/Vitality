@@ -54,11 +54,49 @@ export const ESTADISTICAS = [
   { valor: 2027, sufijo: '', descripcion: 'Historia clínica interprovincial operativa' }
 ];
 
+export const EQUIPO_VITALITY = [
+  {
+    nombre: 'Alvarez Paez, Tomás Agustín',
+    rol: 'Co-Fundador & Especialista en Producto y Experiencia Digital',
+    presentacion: 'Enfocado en transformar necesidades reales de consultorios y pacientes en soluciones ágiles, intuitivas y accesibles.',
+    imagen: '/equipo/tomas-alvarez.jpg',
+    iniciales: 'TA',
+  },
+  {
+    nombre: 'Coronel Arrieta, Ana Milena',
+    rol: 'Co-Fundadora & Especialista en Gestión Clínica y Procesos',
+    presentacion: 'Dedicada a optimizar el flujo de atención entre secretarías, profesionales y pacientes para lograr una experiencia cálida y ordenada.',
+    imagen: '/equipo/ana-coronel.jpg',
+    iniciales: 'AC',
+  },
+  {
+    nombre: 'Dini Domijan, Francisco',
+    rol: 'Co-Fundador & Especialista en Operaciones y Calidad de Servicio',
+    presentacion: 'Orientado a garantizar la confiabilidad, seguridad de la información médica y mejora continua de la plataforma.',
+    imagen: '/equipo/francisco-dini.jpg',
+    iniciales: 'FD',
+  },
+  {
+    nombre: 'Matías, José Augusto',
+    rol: 'Co-Fundador & Especialista en Soluciones e Integración en Salud',
+    presentacion: 'Comprometido con adaptar la herramienta a la realidad de las obras sociales y clínicas privadas de nuestra región.',
+    imagen: '/equipo/jose-matias.jpg',
+    iniciales: 'JM',
+  },
+  {
+    nombre: 'Navarro Zavalía, Ángeles María',
+    rol: 'Co-Fundadora & Especialista en Accesibilidad y Vínculo con el Usuario',
+    presentacion: 'Enfocada en el diseño inclusivo para asegurar que cualquier persona pueda gestionar su salud sin barreras.',
+    imagen: '/equipo/angeles-navarro.jpg',
+    iniciales: 'AN',
+  },
+];
+
 export const TESTIMONIOS = [
   {
     nombre: 'Dra. María Fernández',
     rol: 'Médica Clínica · Barrio Norte, SMT',
-    texto: 'TempusCare redujo nuestro tiempo administrativo a la mitad. El tablero Kanban de recepción y la agenda multi-institucional son fundamentales.',
+    texto: 'TempusCare redujo nuestro tiempo administrativo a la mitad. El tablero de recepción en vivo y la agenda multi-institucional son fundamentales.',
     estrellas: 5,
   },
   {

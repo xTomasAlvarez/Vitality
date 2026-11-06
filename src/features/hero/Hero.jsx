@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Button from '../../shared/ui/Button';
 import { TEMPUSCARE_URL } from '../../shared/data/data';
 import {
   CheckCircle2,
-  ShieldCheck,
-  HeartPulse,
   Star,
   MapPin,
   Clock,
-  Sparkles,
   Building2,
   Stethoscope,
   Columns3,
@@ -32,7 +29,7 @@ const INITIAL_SLOTS = [
   { id: '11:00', time: '11:00 hs', label: 'Hoy · Consultorio 3' },
 ];
 
-const INITIAL_KANBAN = {
+const INITIAL_PATIENTS = {
   espera: [
     { id: 'k1', nombre: 'Marta Rodríguez', hora: '09:15', os: 'PAMI', espera: '8 min' },
     { id: 'k2', nombre: 'Jorge Villagra', hora: '09:30', os: 'Subsidio', espera: '2 min' },
@@ -88,10 +85,46 @@ export default function Hero() {
   const [activeTab, setActiveTab] = useState('paciente');
   const [selectedOS, setSelectedOS] = useState('Subsidio de Salud');
   const [reservedSlot, setReservedSlot] = useState('10:15');
-  const [kanbanData, setKanbanData] = useState(INITIAL_KANBAN);
+  const [patientsData, setPatientsData] = useState(INITIAL_PATIENTS);
   const [walkInAdded, setWalkInAdded] = useState(false);
   const [selectedContext, setSelectedContext] = useState(CONSULTORIOS_MEDICO[0]);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const [isReducedMotion, setIsReducedMotion] = useState(() => {
+    if (typeof document !== 'undefined') {
+      const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      return Boolean(
+        prefersReduced ||
+        document.documentElement.classList.contains('reduce-motion') ||
+        document.documentElement.classList.contains('pause-animations')
+      );
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleReduce = (e) => {
+      setIsReducedMotion(Boolean(e.detail?.isReducedMotion));
+    };
+    const mediaQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const handleMediaChange = (e) => {
+      setIsReducedMotion(
+        Boolean(
+          e.matches ||
+          document.documentElement.classList.contains('reduce-motion') ||
+          document.documentElement.classList.contains('pause-animations')
+        )
+      );
+    };
+
+    window.addEventListener('vitality:reduce-motion', handleReduce);
+    mediaQuery?.addEventListener?.('change', handleMediaChange);
+
+    return () => {
+      window.removeEventListener('vitality:reduce-motion', handleReduce);
+      mediaQuery?.removeEventListener?.('change', handleMediaChange);
+    };
+  }, []);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -99,8 +132,8 @@ export default function Hero() {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -3.5;
-    const rotateY = ((x - centerX) / centerX) * 3.5;
+    const rotateX = ((y - centerY) / centerY) * -3;
+    const rotateY = ((x - centerX) / centerX) * 3;
     setTilt({ rotateX, rotateY });
   };
 
@@ -110,128 +143,215 @@ export default function Hero() {
 
   const handleAddWalkIn = () => {
     if (!walkInAdded) {
-      setKanbanData((prev) => ({
+      setPatientsData((prev) => ({
         ...prev,
         espera: [
-          { id: 'k-walkin', nombre: 'Carlos Juárez (Sobreturno)', hora: 'Ahora', os: 'Subsidio', espera: 'Walk-in', isNew: true },
+          { id: 'k-walkin', nombre: 'Carlos Juárez (Sobreturno)', hora: 'Ahora', os: 'Subsidio', espera: 'Recepción', isNew: true },
           ...prev.espera,
         ]
       }));
       setWalkInAdded(true);
     } else {
-      setKanbanData(INITIAL_KANBAN);
+      setPatientsData(INITIAL_PATIENTS);
       setWalkInAdded(false);
     }
   };
 
   return (
-    <section
-      id="inicio"
-      className="relative min-h-screen flex items-center pt-28 pb-16 lg:pt-32 lg:pb-24 overflow-hidden bg-gradient-to-b from-background-light via-white to-background-light/60"
-    >
-      {/* Ambient background glow */}
-      <div className="pointer-events-none absolute top-12 right-0 w-[520px] h-[520px] rounded-full bg-accent/10 blur-3xl"></div>
-      <div className="pointer-events-none absolute bottom-0 left-0 w-[480px] h-[480px] rounded-full bg-primary/10 blur-3xl"></div>
+    <div className="relative overflow-hidden bg-gradient-to-b from-background-light via-white to-background-light/60">
+      {/* ========================================================
+          1. TIEMPO 1: ABOVE THE FOLD (PRESENTACIÓN PRINCIPAL)
+         ======================================================== */}
+      <section
+        id="inicio"
+        className="relative min-h-[90vh] flex items-center pt-28 pb-16 lg:pt-36 lg:pb-24"
+      >
+        {/* Resplandores orgánicos de ambiente */}
+        <div className="pointer-events-none absolute top-12 right-0 w-[540px] h-[540px] rounded-full bg-accent/10 blur-3xl"></div>
+        <div className="pointer-events-none absolute bottom-0 left-0 w-[480px] h-[480px] rounded-full bg-primary/10 blur-3xl"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            {/* Columna Izquierda: Copy Principal & Acciones */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="lg:col-span-6 max-w-2xl min-w-0"
+            >
+              <h1 className="font-heading text-3xl sm:text-5xl xl:text-6xl font-extrabold text-primary leading-[1.14] tracking-tight mb-6">
+                La tecnología que le devuelve la{' '}
+                <span className="font-serif italic font-normal text-accent text-4xl sm:text-6xl xl:text-[4.25rem] px-0.5">
+                  tranquilidad
+                </span>{' '}
+                a la salud.
+              </h1>
+
+              <p className="text-base sm:text-lg xl:text-xl text-text-muted mb-8 leading-relaxed">
+                En <strong className="text-primary font-semibold">Vitality</strong> diseñamos tecnología pensada para devolverle el valor al tiempo en cada consulta médica. Acompañamos a consultorios, profesionales y pacientes con herramientas simples, humanas y accesibles que agilizan la atención diaria y acercan la salud a todas las personas.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3.5 sm:items-center">
+                <a
+                  href={TEMPUSCARE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
+                >
+                  <Button variant="primary" className="w-full sm:w-auto gap-2">
+                    <span>Conocer TempusCare</span>
+                    <ExternalLink size={17} />
+                  </Button>
+                </a>
+                <a href="#simulador-app" className="w-full sm:w-auto">
+                  <Button variant="secondary" className="w-full sm:w-auto">
+                    Probar la aplicación
+                  </Button>
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Columna Derecha: Isotipo Oficial de TempusCare con Agujas Vectoriales Biseladas */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+              className="lg:col-span-6 relative w-full flex items-center justify-center min-w-0"
+            >
+              <div className="relative w-64 sm:w-80 md:w-96 aspect-[1129/1440] mx-auto flex items-center justify-center">
+                {/* Halo luminoso sutil respirando detrás */}
+                <div className="pointer-events-none absolute -inset-6 bg-gradient-to-tr from-accent/25 via-primary/20 to-teal-300/25 blur-3xl rounded-full animate-pulse" />
+
+                {/* Base del Isotipo Oficial de TempusCare en alta resolución (1129x1440) y con fondo transparente */}
+                <img
+                  src="/logosin_nuevo.png"
+                  alt="TempusCare"
+                  className="w-full h-full object-contain relative z-10"
+                />
+
+                {/* Capa SVG interactiva con las agujas vectoriales animadas superpuestas con precisión milimétrica */}
+                <svg
+                  viewBox="0 0 1129 1440"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-20"
+                  aria-hidden="true"
+                >
+                  <g transform="translate(712.5, 725)">
+                    {/* Aguja 1: Minutero / Larga (Posición inicial ~283°, período 60s) */}
+                    <g transform={isReducedMotion ? 'rotate(283 0 0)' : undefined}>
+                      {!isReducedMotion && (
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="283 0 0"
+                          to="643 0 0"
+                          dur="60s"
+                          repeatCount="indefinite"
+                        />
+                      )}
+                      {/* Mitad inferior (vista en 283°): Celeste #9AD0EA */}
+                      <path
+                        d="M 0,-50 L -27,-50 L -11,-359 A 11 11 0 0 1 0,-370 L 0,-50 Z"
+                        fill="#9AD0EA"
+                      />
+                      {/* Mitad superior (vista en 283°): Azul Marino #1E427E */}
+                      <path
+                        d="M 0,-50 L 0,-370 A 11 11 0 0 1 11,-359 L 27,-50 L 0,-50 Z"
+                        fill="#1E427E"
+                      />
+                    </g>
+
+                    {/* Aguja 2: Horario / Corta (Posición inicial ~92°, período 180s) */}
+                    <g transform={isReducedMotion ? 'rotate(92 0 0)' : undefined}>
+                      {!isReducedMotion && (
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="92 0 0"
+                          to="452 0 0"
+                          dur="180s"
+                          repeatCount="indefinite"
+                        />
+                      )}
+                      {/* Mitad superior/izquierda: Azul Marino #1E427E */}
+                      <path
+                        d="M 0,-50 L -31,-50 L -12,-278 A 12 12 0 0 1 0,-290 L 0,-50 Z"
+                        fill="#1E427E"
+                      />
+                      {/* Mitad inferior/derecha: Celeste #9AD0EA */}
+                      <path
+                        d="M 0,-50 L 0,-290 A 12 12 0 0 1 12,-278 L 31,-50 L 0,-50 Z"
+                        fill="#9AD0EA"
+                      />
+                    </g>
+
+                    {/* Aguja 3: Segundero / Media (Posición inicial ~180°, período 20s) */}
+                    <g transform={isReducedMotion ? 'rotate(180 0 0)' : undefined}>
+                      {!isReducedMotion && (
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="180 0 0"
+                          to="540 0 0"
+                          dur="20s"
+                          repeatCount="indefinite"
+                        />
+                      )}
+                      {/* Mitad derecha (vista en 180°): Azul Marino #1E427E */}
+                      <path
+                        d="M 0,-50 L -16.5,-50 L -6,-329 A 6 6 0 0 1 0,-335 L 0,-50 Z"
+                        fill="#1E427E"
+                      />
+                      {/* Mitad izquierda (vista en 180°): Celeste #9AD0EA */}
+                      <path
+                        d="M 0,-50 L 0,-335 A 6 6 0 0 1 6,-329 L 16.5,-50 L 0,-50 Z"
+                        fill="#9AD0EA"
+                      />
+                    </g>
+
+                    {/* Aro espaciador blanco (#FFFFFF) de donde nacen las agujas */}
+                    <circle cx="0" cy="0" r="72" fill="#FFFFFF" />
+
+                    {/* Eje central: Círculo sólido azul marino (#1E427E) en la capa superior que tapa las uniones */}
+                    <circle cx="0" cy="0" r="52" fill="#1E427E" />
+                  </g>
+                </svg>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          2. TIEMPO 2: SCROLL REVEAL DEL SIMULADOR DE TEMPUSCARE
+             Encabezado por el slogan oficial:
+             "Cuidamos tu tiempo, te cuidamos a vos."
+         ======================================================== */}
+      <section
+        id="simulador-app"
+        className="py-16 lg:py-24 relative border-t border-gray-200/60 bg-gradient-to-b from-white via-background-light/70 to-white"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Columna Izquierda: Copy & CTAs */}
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-6 max-w-2xl min-w-0"
-          >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-primary text-[11px] sm:text-sm font-semibold mb-6">
-              <Sparkles size={14} className="text-accent shrink-0" />
-              <span>Hecho en Tucumán · Plataforma Full-Stack TempusCare</span>
-            </div>
-
-            <h1 className="font-heading text-3xl sm:text-5xl xl:text-6xl font-extrabold text-primary leading-[1.14] tracking-tight mb-6">
-              La tecnología que le devuelve la{' '}
-              <span className="font-serif italic font-normal text-accent text-4xl sm:text-6xl xl:text-[4.25rem] px-0.5">
-                tranquilidad
-              </span>{' '}
-              a la salud.
-            </h1>
-
-            <p className="text-base sm:text-lg xl:text-xl text-text-muted mb-8 leading-relaxed">
-              Somos <strong className="text-primary font-semibold">Vitality</strong>, una startup HealthTech de Tucumán dedicada a transformar la gestión de turnos, recepción Kanban e historia clínica unificada en una experiencia simple, accesible y humana.
+          {/* Encabezado destacado con el Slogan Oficial de TempusCare (Sin etiquetas verdes) */}
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <h2 className="font-serif italic text-3xl sm:text-5xl md:text-[3.25rem] text-primary font-normal leading-tight mb-4">
+              “Cuidamos tu tiempo, te cuidamos a vos.”
+            </h2>
+            <p className="text-base sm:text-lg text-text-muted leading-relaxed">
+              Probá cómo pacientes, secretarías y profesionales experimentan TempusCare todos los días con una interfaz fluida, accesible y sin fricciones.
             </p>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-3.5 sm:items-center mb-8">
-              <a
-                href={TEMPUSCARE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto"
-              >
-                <Button variant="primary" className="w-full sm:w-auto gap-2">
-                  <span>Conocer TempusCare</span>
-                  <ExternalLink size={17} />
-                </Button>
-              </a>
-              <a href="#producto" className="w-full sm:w-auto">
-                <Button variant="secondary" className="w-full sm:w-auto">
-                  Explorar módulos
-                </Button>
-              </a>
-            </div>
-
-            {/* Píldoras de confianza alineadas sin superposición */}
-            <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200/80">
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-text-main bg-white/80 px-3 py-2 rounded-xl border border-gray-200/70 shadow-2xs">
-                <HeartPulse size={16} className="text-accent shrink-0" />
-                <span>Accesibilidad WCAG AAA</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-text-main bg-white/80 px-3 py-2 rounded-xl border border-gray-200/70 shadow-2xs">
-                <ShieldCheck size={16} className="text-primary shrink-0" />
-                <span>Datos clínicos protegidos</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-text-main bg-white/80 px-3 py-2 rounded-xl border border-gray-200/70 shadow-2xs">
-                <Building2 size={16} className="text-secondary shrink-0" />
-                <span>Multi-Institucional</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Columna Derecha: Simulador Interactivo de TempusCare */}
+          {/* Bloque interactivo que simula la app TempusCare con scroll reveal */}
           <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-6 relative w-full min-w-0"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="w-full max-w-4xl mx-auto"
           >
-            {/* Badges flotantes anclados de forma segura (sin cortarse ni tapar contenido) */}
-            <div className="hidden sm:flex items-center justify-between mb-3 px-2">
-              <motion.div
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="hc-card bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-gray-200/80 flex items-center gap-2.5"
-              >
-                <div className="bg-accent/15 p-1.5 rounded-lg text-accent">
-                  <HeartPulse size={16} />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-primary leading-none">Accesibilidad real</p>
-                  <p className="text-[11px] text-text-muted">Teclado + Lector de pantalla</p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 4, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                className="hc-card bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-gray-200/80 flex items-center gap-2.5"
-              >
-                <div className="bg-primary/10 p-1.5 rounded-lg text-primary">
-                  <ShieldCheck size={16} />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-primary leading-none">Datos protegidos</p>
-                  <p className="text-[11px] text-text-muted">Trazabilidad por rol</p>
-                </div>
-              </motion.div>
-            </div>
-
             {/* Contenedor con inclinación 3D sutil */}
             <motion.div
               onMouseMove={handleMouseMove}
@@ -252,7 +372,7 @@ export default function Hero() {
                   <span className="w-2.5 h-2.5 rounded-full bg-green-400"></span>
                   <span className="ml-2 text-xs font-semibold tracking-wide text-blue-100 flex items-center gap-1.5">
                     <Activity size={14} className="text-accent-light" />
-                    TempusCare Live Preview
+                    TempusCare · Vista Interactiva
                   </span>
                 </div>
                 <span className="text-[11px] bg-white/15 px-2.5 py-0.5 rounded-full font-medium text-blue-50">
@@ -260,7 +380,7 @@ export default function Hero() {
                 </span>
               </div>
 
-              {/* Selector de 3 Pestañas (Paciente / Recepción Kanban / Médico) */}
+              {/* Selector de 3 Pestañas Orientadas al Cliente (Paciente / Recepción y Sala de Espera / Médico) */}
               <div
                 role="tablist"
                 aria-label="Vistas del sistema TempusCare"
@@ -291,7 +411,7 @@ export default function Hero() {
                   }`}
                 >
                   <Columns3 size={15} className={activeTab === 'recepcion' ? 'text-accent' : ''} />
-                  <span>Recepción</span>
+                  <span>Recepción y Sala de Espera</span>
                 </button>
 
                 <button
@@ -327,7 +447,7 @@ export default function Hero() {
                           <span className="text-xs font-bold uppercase tracking-wider text-text-muted">
                             Filtrar Obra Social activa
                           </span>
-                          <span className="text-[11px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-md">
+                          <span className="text-[11px] font-semibold text-accent">
                             Sin bloqueo de agenda
                           </span>
                         </div>
@@ -374,7 +494,7 @@ export default function Hero() {
                               <Star size={12} className="fill-amber-400 text-amber-400" />
                               <span>4.9</span>
                             </div>
-                            <span className="text-[10px] text-text-muted mt-1">128 encuestas</span>
+                            <span className="text-[10px] text-text-muted mt-1">128 opiniones</span>
                           </div>
                         </div>
 
@@ -452,11 +572,11 @@ export default function Hero() {
                       transition={{ duration: 0.25 }}
                       className="space-y-4"
                     >
-                      {/* Cabecera Recepción + Botón Sobreturno / Walk-in */}
+                      {/* Cabecera Recepción + Botón Sobreturno / Recepción rápida */}
                       <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-gray-100">
                         <div>
                           <h3 className="font-heading font-bold text-primary text-sm sm:text-base">
-                            Tablero Kanban de Recepción
+                            Gestión de Secretaría y Sala de Espera
                           </h3>
                           <p className="text-xs text-text-muted">
                             Sincronizado en tiempo real con el consultorio médico
@@ -472,11 +592,11 @@ export default function Hero() {
                           }`}
                         >
                           <Plus size={14} />
-                          <span>{walkInAdded ? 'Quitar Sobreturno' : 'Sobreturno / Walk-in'}</span>
+                          <span>{walkInAdded ? 'Quitar Sobreturno' : 'Ingreso Rápido / Sobreturno'}</span>
                         </button>
                       </div>
 
-                      {/* 3 Columnas Kanban: En Espera, En Consulta, Atendido */}
+                      {/* 3 Columnas de Flujo de Atención: En Espera, En Consulta, Atendido */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                         {/* Columna 1: En Espera */}
                         <div className="bg-background-light p-2.5 rounded-2xl border border-gray-200/80">
@@ -486,11 +606,11 @@ export default function Hero() {
                               En Espera
                             </span>
                             <span className="text-[11px] font-bold bg-white px-2 py-0.5 rounded-full text-primary border border-gray-200">
-                              {kanbanData.espera.length}
+                              {patientsData.espera.length}
                             </span>
                           </div>
                           <div className="space-y-2">
-                            {kanbanData.espera.map((item) => (
+                            {patientsData.espera.map((item) => (
                               <div
                                 key={item.id}
                                 className={`p-2.5 rounded-xl bg-white border text-xs shadow-2xs ${
@@ -515,11 +635,11 @@ export default function Hero() {
                               En Consulta
                             </span>
                             <span className="text-[11px] font-bold bg-white px-2 py-0.5 rounded-full text-primary border border-blue-200">
-                              {kanbanData.consulta.length}
+                              {patientsData.consulta.length}
                             </span>
                           </div>
                           <div className="space-y-2">
-                            {kanbanData.consulta.map((item) => (
+                            {patientsData.consulta.map((item) => (
                               <div
                                 key={item.id}
                                 className="p-2.5 rounded-xl bg-white border border-blue-200 text-xs shadow-2xs"
@@ -542,11 +662,11 @@ export default function Hero() {
                               Atendido
                             </span>
                             <span className="text-[11px] font-bold bg-white px-2 py-0.5 rounded-full text-emerald-800 border border-emerald-200">
-                              {kanbanData.atendido.length}
+                              {patientsData.atendido.length}
                             </span>
                           </div>
                           <div className="space-y-2">
-                            {kanbanData.atendido.map((item) => (
+                            {patientsData.atendido.map((item) => (
                               <div
                                 key={item.id}
                                 className="p-2.5 rounded-xl bg-white border border-emerald-200 text-xs shadow-2xs"
@@ -563,8 +683,8 @@ export default function Hero() {
                       </div>
 
                       <div className="text-xs text-text-muted bg-background-light px-3 py-2 rounded-xl flex items-center justify-between">
-                        <span>Flujo de admisión sin recarga de página</span>
-                        <span className="font-bold text-primary">Drag & Drop + Walk-in</span>
+                        <span>Flujo de admisión en vivo sin demoras</span>
+                        <span className="font-bold text-primary">Sincronización instantánea</span>
                       </div>
                     </motion.div>
                   )}
@@ -578,12 +698,12 @@ export default function Hero() {
                       transition={{ duration: 0.25 }}
                       className="space-y-3.5"
                     >
-                      {/* ContextSwitcher: Selector de Consultorio */}
+                      {/* Selector de Consultorio Activo */}
                       <div className="bg-background-light p-2.5 rounded-2xl border border-gray-200/80">
                         <div className="flex items-center justify-between mb-1.5">
                           <span className="text-[11px] font-bold uppercase tracking-wider text-text-muted flex items-center gap-1">
                             <Building2 size={12} className="text-accent" />
-                            ContextSwitcher · Consultorio Activo
+                            Consultorio y Sede Activa
                           </span>
                           <span className="text-[11px] font-bold text-primary">
                             {selectedContext.turnosHoy} turnos hoy
@@ -607,7 +727,7 @@ export default function Hero() {
                         </div>
                       </div>
 
-                      {/* Ficha Paciente + PatientTimeline */}
+                      {/* Ficha Paciente + Línea de Tiempo */}
                       <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-accent/10 border border-accent/20 text-xs">
                         <div>
                           <span className="font-bold text-primary">Paciente: Marta Rodríguez (68a)</span>
@@ -616,7 +736,7 @@ export default function Hero() {
                         <span className="font-bold text-accent hidden sm:inline">HCE #00492</span>
                       </div>
 
-                      {/* Línea de tiempo de evoluciones (PatientTimeline) */}
+                      {/* Línea de tiempo de evoluciones */}
                       <div className="space-y-2.5 pl-2">
                         {TIMELINE_EVOLUCIONES.map((item, idx) => (
                           <div key={idx} className="relative pl-5 border-l-2 border-accent/40">
@@ -639,7 +759,7 @@ export default function Hero() {
                 {/* Pie de la tarjeta interactiva con enlace directo */}
                 <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
                   <span className="text-text-muted font-medium">
-                    Módulos reales en rama <code className="text-primary font-bold">develop</code>
+                    Simulación interactiva oficial de <strong className="text-primary font-semibold">TempusCare</strong>
                   </span>
                   <a
                     href={TEMPUSCARE_URL}
@@ -656,7 +776,7 @@ export default function Hero() {
           </motion.div>
 
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

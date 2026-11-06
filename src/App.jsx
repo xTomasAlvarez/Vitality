@@ -13,15 +13,45 @@ import Producto from './features/product/Producto';
 import Diferenciales from './features/product/Diferenciales';
 import ComoTrabajamos from './features/workflow/ComoTrabajamos';
 import Estadisticas from './features/workflow/Estadisticas';
-import Testimonios from './features/testimonials/Testimonios';
 import CTAFinal from './features/contact/CTAFinal';
 import Contacto from './features/contact/Contacto';
 
 function App() {
-  const [pauseAnimations, setPauseAnimations] = useState(false);
+  const [isReducedMotion, setIsReducedMotion] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('reduce-motion') ||
+             document.documentElement.classList.contains('pause-animations');
+    }
+    return false;
+  });
 
+  // Escuchar cambios de reduce-motion globales mediante CustomEvent y MutationObserver
   useEffect(() => {
-    if (pauseAnimations) {
+    const handleReduceMotionChange = (e) => {
+      const reduced = Boolean(e.detail?.isReducedMotion);
+      setIsReducedMotion(reduced);
+    };
+
+    window.addEventListener('vitality:reduce-motion', handleReduceMotionChange);
+
+    // MutationObserver sobre html para sincronización de clase reduce-motion / pause-animations
+    const observer = new MutationObserver(() => {
+      const hasClass = document.documentElement.classList.contains('reduce-motion') ||
+                       document.documentElement.classList.contains('pause-animations');
+      setIsReducedMotion((prev) => (prev !== hasClass ? hasClass : prev));
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    return () => {
+      window.removeEventListener('vitality:reduce-motion', handleReduceMotionChange);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Smooth scroll de Lenis: se desactiva/destruye inmediatamente si reduce-motion está activo
+  useEffect(() => {
+    if (isReducedMotion) {
       return;
     }
 
@@ -42,10 +72,10 @@ function App() {
       if (rafId) cancelAnimationFrame(rafId);
       lenis.destroy();
     };
-  }, [pauseAnimations]);
+  }, [isReducedMotion]);
 
   return (
-    <MotionConfig reducedMotion={pauseAnimations ? 'always' : 'user'}>
+    <MotionConfig reducedMotion={isReducedMotion ? 'always' : 'never'}>
       <div className="font-sans text-text-main bg-background-light selection:bg-accent selection:text-white min-h-screen">
         <Navbar />
 
@@ -59,13 +89,13 @@ function App() {
           <ComoTrabajamos />
           <Estadisticas />
           <Equipo />
-          <Testimonios />
+          {/* Testimonios eliminado por requerimiento */}
           <CTAFinal />
           <Contacto />
         </main>
 
         <Footer />
-        <AccessibilityWidget onPauseAnimationsChange={setPauseAnimations} />
+        <AccessibilityWidget onPauseAnimationsChange={(paused) => setIsReducedMotion(paused)} />
       </div>
     </MotionConfig>
   );

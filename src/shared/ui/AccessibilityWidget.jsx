@@ -14,9 +14,41 @@ const FONT_SCALES = [100, 115, 130];
 
 export default function AccessibilityWidget({ onPauseAnimationsChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [highContrast, setHighContrast] = useState(false);
+  const [highContrast, setHighContrast] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('high-contrast');
+    }
+    return false;
+  });
   const [fontScale, setFontScale] = useState(100);
-  const [pauseAnimations, setPauseAnimations] = useState(false);
+  const [pauseAnimations, setPauseAnimations] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('reduce-motion') ||
+             document.documentElement.classList.contains('pause-animations');
+    }
+    return false;
+  });
+
+  // Escuchar eventos de sincronización externa (ej. desde Producto.jsx)
+  useEffect(() => {
+    const handleExternalReduceMotion = (e) => {
+      const active = Boolean(e.detail?.isReducedMotion);
+      setPauseAnimations((prev) => (prev !== active ? active : prev));
+    };
+
+    const handleExternalHighContrast = (e) => {
+      const active = Boolean(e.detail?.highContrast);
+      setHighContrast((prev) => (prev !== active ? active : prev));
+    };
+
+    window.addEventListener('vitality:reduce-motion', handleExternalReduceMotion);
+    window.addEventListener('vitality:high-contrast', handleExternalHighContrast);
+
+    return () => {
+      window.removeEventListener('vitality:reduce-motion', handleExternalReduceMotion);
+      window.removeEventListener('vitality:high-contrast', handleExternalHighContrast);
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -36,8 +68,10 @@ export default function AccessibilityWidget({ onPauseAnimationsChange }) {
     const root = document.documentElement;
     if (pauseAnimations) {
       root.classList.add('pause-animations');
+      root.classList.add('reduce-motion');
     } else {
       root.classList.remove('pause-animations');
+      root.classList.remove('reduce-motion');
     }
     if (onPauseAnimationsChange) {
       onPauseAnimationsChange(pauseAnimations);
@@ -54,10 +88,24 @@ export default function AccessibilityWidget({ onPauseAnimationsChange }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
+  const handleTogglePause = () => {
+    const nextVal = !pauseAnimations;
+    setPauseAnimations(nextVal);
+    window.dispatchEvent(new CustomEvent('vitality:reduce-motion', { detail: { isReducedMotion: nextVal } }));
+  };
+
+  const handleToggleHighContrast = () => {
+    const nextVal = !highContrast;
+    setHighContrast(nextVal);
+    window.dispatchEvent(new CustomEvent('vitality:high-contrast', { detail: { highContrast: nextVal } }));
+  };
+
   const handleReset = () => {
     setHighContrast(false);
+    window.dispatchEvent(new CustomEvent('vitality:high-contrast', { detail: { highContrast: false } }));
     setFontScale(100);
     setPauseAnimations(false);
+    window.dispatchEvent(new CustomEvent('vitality:reduce-motion', { detail: { isReducedMotion: false } }));
   };
 
   const hasActiveCustomizations = highContrast || fontScale !== 100 || pauseAnimations;
@@ -115,7 +163,7 @@ export default function AccessibilityWidget({ onPauseAnimationsChange }) {
                   type="button"
                   role="switch"
                   aria-checked={highContrast}
-                  onClick={() => setHighContrast(!highContrast)}
+                  onClick={handleToggleHighContrast}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                     highContrast
                       ? 'bg-primary text-white border-primary'
@@ -156,20 +204,20 @@ export default function AccessibilityWidget({ onPauseAnimationsChange }) {
                 </div>
               </div>
 
-              {/* 3. Pausar Animaciones */}
+              {/* 3. Pausar Animaciones (Reducción Real) */}
               <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-background-light border border-gray-200/80">
                 <div className="flex items-center gap-2.5">
                   <PauseCircle size={18} className="text-accent shrink-0" />
                   <div>
                     <p className="text-xs font-bold text-primary">Pausar Animaciones</p>
-                    <p className="text-[11px] text-text-muted">Movimiento reducido</p>
+                    <p className="text-[11px] text-text-muted">Movimiento reducido 100%</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   role="switch"
                   aria-checked={pauseAnimations}
-                  onClick={() => setPauseAnimations(!pauseAnimations)}
+                  onClick={handleTogglePause}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                     pauseAnimations
                       ? 'bg-primary text-white border-primary'

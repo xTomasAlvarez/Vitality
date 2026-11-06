@@ -124,17 +124,21 @@ html.high-contrast [tabindex]:focus-visible {
 }
 
 /* ==========================================
-   PAUSAR ANIMACIONES (REDUCED MOTION)
+   PAUSAR ANIMACIONES (REDUCED MOTION TOTAL)
    ========================================== */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after,
 html.pause-animations *,
 html.pause-animations *::before,
 html.pause-animations *::after {
-  animation-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.001ms !important;
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
   scroll-behavior: auto !important;
 }
 
+html.reduce-motion .reveal,
 html.pause-animations .reveal {
   opacity: 1 !important;
   transform: none !important;

@@ -10,12 +10,12 @@ export default function Diferenciales() {
     {
       icon: Timer,
       titulo: 'Reducción de tiempos de espera',
-      desc: 'Sincronización instantánea entre reserva online y recepción Kanban para eliminar cuellos de botella en sala.'
+      desc: 'Sincronización instantánea entre reserva online y recepción en vivo para eliminar cuellos de botella en sala.'
     },
     {
       icon: Briefcase,
       titulo: 'Menor carga administrativa',
-      desc: 'Automatización de recordatorios, validación de obras sociales y gestión de sobreturnos sin planillas manuales.'
+      desc: 'Automatización de recordatorios, validación de coberturas médicas y gestión de sobreturnos sin planillas manuales.'
     },
     {
       icon: Eye,
@@ -30,7 +30,7 @@ export default function Diferenciales() {
     {
       icon: GitMerge,
       titulo: 'Un solo perfil médico multi-sede',
-      desc: 'El profesional alterna entre sus consultorios con nuestro ContextSwitcher manteniendo su historia clínica unificada.'
+      desc: 'El profesional alterna entre sus consultorios en un solo clic manteniendo su historia clínica unificada.'
     },
     {
       icon: Network,
@@ -40,17 +40,17 @@ export default function Diferenciales() {
   ];
 
   return (
-    <section className="py-24 bg-white border-t border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={revealRef}>
+    <section className="py-24 bg-white border-t border-gray-100 relative overflow-hidden">
+      {/* Sutil halo decorativo */}
+      <div className="pointer-events-none absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={revealRef}>
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <span className="inline-block text-xs font-bold text-accent uppercase tracking-widest mb-3 bg-accent/10 px-3.5 py-1 rounded-full">
-            Ventaja Competitiva
-          </span>
-          <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-primary mb-4 tracking-tight">
+          <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight">
             Por qué elegir Vitality & TempusCare
           </h2>
-          <p className="text-base sm:text-lg text-text-muted">
-            No solo creamos software; construimos un ecosistema de salud más eficiente, trazable y humano.
+          <p className="text-base sm:text-lg text-text-muted leading-relaxed">
+            No solo creamos software; construimos un ecosistema de salud más eficiente, accesible, confiable y humano.
           </p>
         </div>
 
@@ -58,24 +58,35 @@ export default function Diferenciales() {
           {diferencias.map((item, index) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <motion.article
                 key={index}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="hc-card flex gap-4 items-start group p-6 rounded-3xl bg-background-light/60 hover:bg-white border border-gray-200/70 hover:border-accent/40 hover:shadow-lg transition-all"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="hc-card group relative rounded-3xl p-7 bg-background-light/70 hover:bg-white border border-gray-200/80 hover:border-accent/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
-                <div className="bg-white p-3.5 rounded-2xl text-secondary group-hover:bg-accent group-hover:text-white transition-all duration-300 shadow-xs shrink-0">
-                  <Icon size={26} />
-                </div>
+                {/* Resplandor dinámico en hover */}
+                <div className="pointer-events-none absolute -top-12 -right-12 w-32 h-32 bg-accent/10 rounded-full blur-2xl group-hover:bg-accent/25 transition-colors duration-500" />
+
                 <div>
-                  <h3 className="font-heading font-bold text-primary mb-1.5 text-lg leading-snug">
+                  {/* Encabezado con Ícono animado */}
+                  <div className="mb-5">
+                    <div className="w-13 h-13 rounded-2xl bg-white shadow-xs border border-gray-100 flex items-center justify-center text-secondary group-hover:bg-accent group-hover:text-white transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3 shrink-0">
+                      <Icon size={24} />
+                    </div>
+                  </div>
+
+                  <h3 className="font-heading font-bold text-primary mb-2.5 text-lg sm:text-xl leading-snug">
                     {item.titulo}
                   </h3>
-                  <p className="text-text-muted leading-relaxed text-sm">
+
+                  <p className="text-text-muted leading-relaxed text-sm sm:text-[15px]">
                     {item.desc}
                   </p>
                 </div>
-              </motion.div>
+              </motion.article>
             );
           })}
         </div>

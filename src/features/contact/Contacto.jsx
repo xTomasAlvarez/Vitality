@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../../shared/ui/Button';
-import { Mail, MapPin, Clock } from 'lucide-react';
+import { Mail, MapPin, Clock, ChevronDown } from 'lucide-react';
 import { useScrollReveal } from '../../shared/hooks/useScrollReveal';
 
 export default function Contacto() {
@@ -9,7 +9,7 @@ export default function Contacto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus('Mensaje enviado. Nos pondremos en contacto pronto.');
+    setStatus('Mensaje enviado con éxito. Nos pondremos en contacto pronto.');
     setTimeout(() => setStatus(''), 5000);
     e.target.reset();
   };
@@ -20,10 +20,11 @@ export default function Contacto() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           
           <div>
-            <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-3">Contacto</h2>
-            <h3 className="text-4xl font-extrabold text-primary mb-6">Hablemos</h3>
+            <h2 className="font-heading text-4xl sm:text-5xl font-extrabold text-primary mb-6 tracking-tight">
+              Contactanos
+            </h2>
             <p className="text-text-muted text-lg mb-10 leading-relaxed">
-              ¿Tenés dudas sobre TempusCare o querés sumarte a la red? Escribinos y nuestro equipo se pondrá en contacto.
+              ¿Tenés dudas sobre TempusCare o querés sumarte a la red? Escribinos y nuestro equipo te responderá con gusto.
             </p>
             
             <div className="space-y-6">
@@ -32,7 +33,7 @@ export default function Contacto() {
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary">Ubicación</h4>
+                  <h3 className="font-bold text-primary">Ubicación</h3>
                   <p className="text-text-muted">San Miguel de Tucumán, Argentina</p>
                 </div>
               </div>
@@ -41,7 +42,7 @@ export default function Contacto() {
                   <Mail size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary">Email</h4>
+                  <h3 className="font-bold text-primary">Email</h3>
                   <p className="text-text-muted">hola@vitality.com.ar</p>
                 </div>
               </div>
@@ -50,7 +51,7 @@ export default function Contacto() {
                   <Clock size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary">Atención</h4>
+                  <h3 className="font-bold text-primary">Atención</h3>
                   <p className="text-text-muted">Lunes a Viernes, 9:00 a 18:00 hs</p>
                 </div>
               </div>
@@ -83,21 +84,25 @@ export default function Contacto() {
 
               <div>
                 <label htmlFor="tipo" className="block text-sm font-semibold text-primary mb-2">Tipo de consulta</label>
-                <select 
-                  id="tipo" 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all text-text-main"
-                >
-                  <option value="consultorio">Soy un consultorio/profesional</option>
-                  <option value="paciente">Soy paciente</option>
-                  <option value="prensa">Prensa / Otro</option>
-                </select>
+                <div className="relative">
+                  <select 
+                    id="tipo" 
+                    className="w-full appearance-none px-4 pr-12 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all text-text-main bg-white cursor-pointer"
+                  >
+                    <option value="consultorio">Soy un consultorio o profesional de salud</option>
+                    <option value="paciente">Soy paciente</option>
+                    <option value="institucion">Clínica o Centro Médico</option>
+                    <option value="otro">Otra consulta</option>
+                  </select>
+                  <ChevronDown size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
+                </div>
               </div>
 
               <div>
                 <label htmlFor="mensaje" className="block text-sm font-semibold text-primary mb-2">Mensaje</label>
                 <textarea 
                   id="mensaje" 
-                  rows="4"
+                  rows="4" 
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all resize-none"
                   placeholder="¿En qué te podemos ayudar?"
