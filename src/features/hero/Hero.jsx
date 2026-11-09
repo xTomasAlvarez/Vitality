@@ -160,7 +160,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative overflow-hidden bg-background-light">
+    <div className="relative overflow-hidden bg-gradient-to-b from-background-light via-white to-background-light/60">
       {/* ========================================================
           1. TIEMPO 1: ABOVE THE FOLD (PRESENTACIÓN PRINCIPAL)
          ======================================================== */}
@@ -332,7 +332,7 @@ export default function Hero() {
          ======================================================== */}
       <section
         id="simulador-app"
-        className="py-14 sm:py-16 lg:py-24 relative border-t border-gray-400/40 bg-background-light"
+        className="py-14 sm:py-16 lg:py-24 relative border-t border-gray-200/60 bg-gradient-to-b from-white via-background-light/70 to-white"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           

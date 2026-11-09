@@ -5,7 +5,7 @@ export default function Nosotros() {
   const revealRef = useScrollReveal();
 
   return (
-    <section id="nosotros" className="py-16 sm:py-20 lg:py-24 bg-background-light relative overflow-hidden">
+    <section id="nosotros" className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">
       {/* Sutiles acentos de fondo */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-[500px] lg:w-[700px] h-[350px] bg-accent/5 rounded-full blur-3xl"></div>
 

@@ -52,7 +52,7 @@ export default function Equipo() {
   const revealRef = useScrollReveal();
 
   return (
-    <section id="equipo" className="py-16 sm:py-20 lg:py-24 bg-background-light relative overflow-hidden">
+    <section id="equipo" className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">
       {/* Sutil halo ambiental */}
       <div className="pointer-events-none absolute top-1/2 left-0 w-72 sm:w-80 h-72 sm:h-80 bg-accent/5 rounded-full blur-3xl" />
 

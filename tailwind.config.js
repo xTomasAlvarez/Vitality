@@ -15,13 +15,8 @@ export default {
           dark: '#1E8E88',
         },
         background: {
-          // =========================================================
-          // MODO DE PRUEBA TEMPORAL: FONDO GRIS
-          // (Valores originales respaldados para revertir:
-          //  light: '#F5F8FA', darker: '#EEF3F6')
-          // =========================================================
-          light: '#D1D5DB', // Gris medio de prueba (Tailwind gray-300)
-          darker: '#C5CAD3', // Gris ligeramente más oscuro
+          light: '#F5F8FA',
+          darker: '#EEF3F6',
         },
         text: {
           main: '#111827',

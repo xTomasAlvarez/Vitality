@@ -40,7 +40,7 @@ export default function Diferenciales() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-background-light border-t border-gray-400/40 relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-24 bg-white border-t border-gray-100 relative overflow-hidden">
       {/* Sutil halo decorativo */}
       <div className="pointer-events-none absolute top-1/2 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-accent/5 rounded-full blur-3xl" />
 
@@ -65,7 +65,7 @@ export default function Diferenciales() {
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="hc-card group relative rounded-3xl p-6 sm:p-7 bg-white hover:bg-white border border-gray-200/80 hover:border-accent/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="hc-card group relative rounded-3xl p-6 sm:p-7 bg-background-light/70 hover:bg-white border border-gray-200/80 hover:border-accent/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Resplandor dinámico en hover */}
                 <div className="pointer-events-none absolute -top-12 -right-12 w-32 h-32 bg-accent/10 rounded-full blur-2xl group-hover:bg-accent/25 transition-colors duration-500" />

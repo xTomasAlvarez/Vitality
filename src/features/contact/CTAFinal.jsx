@@ -8,7 +8,7 @@ export default function CTAFinal() {
   const revealRef = useScrollReveal();
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-background-light relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" ref={revealRef}>
         <div className="hc-card bg-gradient-to-br from-primary to-secondary rounded-3xl p-6 sm:p-12 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
           <div className="pointer-events-none absolute top-0 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-accent rounded-full filter blur-3xl opacity-30 transform translate-x-1/3 -translate-y-1/3"></div>

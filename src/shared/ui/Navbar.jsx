@@ -29,8 +29,8 @@ export default function Navbar() {
       aria-label="Navegación principal"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#D1D5DB]/95 backdrop-blur-md shadow-sm py-2.5 sm:py-3 border-b border-gray-400/40'
-          : 'bg-[#D1D5DB]/80 backdrop-blur-xs py-3 sm:py-4'
+          ? 'bg-white/95 backdrop-blur-md shadow-sm py-2.5 sm:py-3 border-b border-gray-200/60'
+          : 'bg-white/70 backdrop-blur-xs py-3 sm:py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,8 +90,8 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       <div
-        className={`lg:hidden absolute top-full left-0 w-full bg-[#D1D5DB] shadow-2xl transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? 'max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-gray-400/40' : 'max-h-0'
+        className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl transition-all duration-300 overflow-hidden ${
+          isMobileMenuOpen ? 'max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-gray-100' : 'max-h-0'
         }`}
       >
         <div className="px-4 py-4 space-y-1 flex flex-col">

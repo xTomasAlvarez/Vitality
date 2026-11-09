@@ -9,8 +9,6 @@
     overflow-x: hidden;
     max-width: 100vw;
     width: 100%;
-    /* MODO DE PRUEBA: FONDO GRIS (Original: transparente / heredado de App.jsx) */
-    background-color: #D1D5DB;
   }
 
   h1, h2, h3, h4, .font-heading {
