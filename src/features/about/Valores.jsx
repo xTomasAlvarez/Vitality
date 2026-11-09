@@ -6,7 +6,7 @@ export default function Valores() {
   const revealRef = useScrollReveal();
 
   return (
-    <section id="valores" className="py-16 sm:py-20 lg:py-24 bg-white">
+    <section id="valores" className="py-16 sm:py-20 lg:py-24 bg-background-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={revealRef}>
         <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary font-heading tracking-tight">
@@ -31,7 +31,7 @@ export default function Valores() {
               <div 
                 key={index} 
                 tabIndex={0}
-                className={`hc-card group bg-background-light p-5 lg:p-4 xl:p-5 rounded-3xl border border-gray-200/60 lg:border-transparent flex-none lg:flex-1 w-full lg:w-auto relative transition-all duration-500 ease-out cursor-pointer flex flex-col items-start
+                className={`hc-card group bg-white p-5 lg:p-4 xl:p-5 rounded-3xl border border-gray-200/60 lg:border-transparent flex-none lg:flex-1 w-full lg:w-auto relative transition-all duration-500 ease-out cursor-pointer flex flex-col items-start
                   ${index % 2 === 1 ? 'lg:translate-y-8' : 'lg:-translate-y-4'}
                   lg:group-hover/container:blur-[1px] lg:group-hover/container:opacity-75 lg:group-hover/container:scale-95
                   hover:shadow-lg lg:hover:!blur-none lg:hover:!opacity-100 lg:hover:!scale-[1.14] lg:hover:!flex-[1.7] lg:hover:z-50 lg:hover:bg-white lg:hover:shadow-2xl lg:hover:border-gray-200
