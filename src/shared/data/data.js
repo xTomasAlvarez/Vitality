@@ -1,6 +1,6 @@
 import { Activity, Users, Shield, MessagesSquare, HeartHandshake, Zap, Target } from 'lucide-react';
 
-export const TEMPUSCARE_URL = import.meta.env.VITE_TEMPUSCARE_URL || "http://localhost:5173";
+export const TEMPUSCARE_URL = import.meta.env.VITE_TEMPUSCARE_URL || "https://tempuscare-production-adac6456.up.railway.app/";
 
 export const VALORES_CUIDADO = [
   {

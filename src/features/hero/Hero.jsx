@@ -206,9 +206,15 @@ export default function Hero() {
                     <ExternalLink size={17} />
                   </Button>
                 </a>
-                <a href="#simulador-app" className="w-full sm:w-auto">
-                  <Button variant="secondary" className="w-full sm:w-auto justify-center">
-                    Probar la aplicación
+                <a
+                  href={TEMPUSCARE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
+                >
+                  <Button variant="secondary" className="w-full sm:w-auto justify-center gap-2">
+                    <span>Probar la aplicación</span>
+                    <ExternalLink size={17} />
                   </Button>
                 </a>
               </div>
