@@ -29,7 +29,7 @@ function TeamMemberCard({ miembro, index }) {
             <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-accent text-white font-heading font-extrabold text-xl sm:text-2xl flex items-center justify-center shadow-md mb-2 group-hover:scale-110 transition-transform">
               {miembro.iniciales}
             </div>
-            <span className="text-[11px] sm:text-xs font-bold text-primary truncate max-w-full">
+            <span className="text-[11px] sm:text-xs font-bold text-primary leading-tight max-w-full">
               {miembro.nombre}
             </span>
           </div>
@@ -38,7 +38,7 @@ function TeamMemberCard({ miembro, index }) {
         {/* Overlay con el nombre: En móvil se muestra sutilmente visible ya que no hay hover en touch; en desktop se revela en hover */}
         {!imageError && (
           <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 bg-gradient-to-t from-primary/95 via-primary/60 to-transparent opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center text-center pointer-events-none">
-            <span className="text-white text-xs sm:text-sm font-semibold tracking-wide drop-shadow-sm truncate">
+            <span className="text-white text-xs sm:text-sm font-semibold tracking-wide drop-shadow-sm leading-tight">
               {miembro.nombre}
             </span>
           </div>
