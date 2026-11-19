@@ -18,12 +18,20 @@ function TeamMemberCard({ miembro, index }) {
       {/* Espacio destacado para la foto del integrante con zoom sutil */}
       <div className="relative w-full aspect-[4/4.5] rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 via-background-light to-accent/10 border border-gray-100 flex items-center justify-center">
         {!imageError ? (
-          <img
-            src={miembro.imagen}
-            alt={miembro.nombre}
-            onError={() => setImageError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+          <div
+            className="w-full h-full overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-500"
+            style={{
+              transform: miembro.escala ? `scale(${miembro.escala})` : undefined,
+            }}
+          >
+            <img
+              src={miembro.imagen}
+              alt={miembro.nombre}
+              onError={() => setImageError(true)}
+              style={{ objectPosition: miembro.posicion || 'center center' }}
+              className="w-full h-full object-cover"
+            />
+          </div>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-blue-50 to-accent/15 p-3 text-center">
             <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-accent text-white font-heading font-extrabold text-xl sm:text-2xl flex items-center justify-center shadow-md mb-2 group-hover:scale-110 transition-transform">
@@ -66,10 +74,15 @@ export default function Equipo() {
           </p>
         </div>
 
-        {/* Grilla balanceada: 2 columnas en móvil, 3 en tablet, 5 en desktop */}
+        {/* Grilla balanceada: 2 columnas en móvil (con el 5to miembro centrado), 3 en tablet, 5 en desktop */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
           {EQUIPO_VITALITY.map((miembro, idx) => (
-            <TeamMemberCard key={miembro.nombre} miembro={miembro} index={idx} />
+            <div
+              key={miembro.nombre}
+              className={idx === 4 ? 'col-span-2 max-w-[200px] sm:max-w-none sm:col-span-1 mx-auto w-full' : 'w-full'}
+            >
+              <TeamMemberCard miembro={miembro} index={idx} />
+            </div>
           ))}
         </div>
       </div>
