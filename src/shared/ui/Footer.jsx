@@ -1,7 +1,18 @@
 import React from 'react';
+import { navigateTo } from '../utils/navigation';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const navItems = [
+    { name: 'Inicio', href: '#inicio' },
+    { name: 'Nosotros', href: '#nosotros' },
+    { name: 'Valores', href: '#valores' },
+    { name: 'TempusCare', href: '#producto' },
+    { name: 'Metodología', href: '#workflow' },
+    { name: 'Equipo', href: '#equipo' },
+    { name: 'Contacto', href: '#contacto' },
+  ];
 
   return (
     <footer className="bg-background-darker pt-12 sm:pt-16 pb-24 border-t border-gray-200">
@@ -9,7 +20,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-12">
           
           <div className="col-span-1 sm:col-span-2">
-            <a href="#inicio" className="flex items-center gap-3 mb-4 group inline-flex">
+            <a
+              href="#inicio"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo('#inicio');
+              }}
+              className="flex items-center gap-3 mb-4 group inline-flex"
+            >
               <div className="h-10 sm:h-12 w-auto flex items-center justify-center group-hover:scale-105 transition-transform">
                 <img src="/vitality-removebg-preview.png" alt="Logo Vitality" className="h-10 sm:h-12 w-auto object-contain" />
               </div>
@@ -26,13 +44,13 @@ export default function Footer() {
               Transformando la gestión de salud en Tucumán mediante tecnología accesible, simple y humana.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="Instagram">
+              <a href="#/redes-sociales" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="Instagram de Vitality (Próximamente)">
                 Instagram
               </a>
-              <a href="#" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="Facebook">
+              <a href="#/redes-sociales" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="Facebook de Vitality (Próximamente)">
                 Facebook
               </a>
-              <a href="#" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="LinkedIn">
+              <a href="#/redes-sociales" className="text-text-muted hover:text-accent font-semibold text-sm transition-colors" aria-label="LinkedIn de Vitality (Próximamente)">
                 LinkedIn
               </a>
             </div>
@@ -41,22 +59,29 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-primary mb-4 text-base">Navegación</h3>
             <ul className="space-y-2.5 sm:space-y-3 text-sm">
-              <li><a href="#inicio" className="text-text-muted hover:text-accent transition-colors">Inicio</a></li>
-              <li><a href="#nosotros" className="text-text-muted hover:text-accent transition-colors">Nosotros</a></li>
-              <li><a href="#valores" className="text-text-muted hover:text-accent transition-colors">Valores</a></li>
-              <li><a href="#producto" className="text-text-muted hover:text-accent transition-colors">TempusCare</a></li>
-              <li><a href="#workflow" className="text-text-muted hover:text-accent transition-colors">Metodología</a></li>
-              <li><a href="#equipo" className="text-text-muted hover:text-accent transition-colors">Equipo</a></li>
-              <li><a href="#contacto" className="text-text-muted hover:text-accent transition-colors">Contacto</a></li>
+              {navItems.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo(item.href);
+                    }}
+                    className="text-text-muted hover:text-accent transition-colors"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h3 className="font-bold text-primary mb-4 text-base">Legales</h3>
             <ul className="space-y-2.5 sm:space-y-3 text-sm">
-              <li><a href="#" className="text-text-muted hover:text-accent transition-colors">Política de Privacidad</a></li>
-              <li><a href="#" className="text-text-muted hover:text-accent transition-colors">Términos y Condiciones</a></li>
-              <li><a href="#" className="text-text-muted hover:text-accent transition-colors">Cumplimiento Ley 26.529</a></li>
+              <li><a href="#/privacidad" className="text-text-muted hover:text-accent transition-colors">Política de Privacidad</a></li>
+              <li><a href="#/terminos" className="text-text-muted hover:text-accent transition-colors">Términos y Condiciones</a></li>
+              <li><a href="#/ley-26529" className="text-text-muted hover:text-accent transition-colors">Cumplimiento Ley 26.529</a></li>
             </ul>
           </div>
         </div>

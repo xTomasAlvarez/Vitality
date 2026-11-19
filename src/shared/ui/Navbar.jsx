@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import { TEMPUSCARE_URL } from '../data/data';
+import { navigateTo } from '../utils/navigation';
 
-export default function Navbar() {
+export default function Navbar({ currentRoute = 'home' }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -36,7 +37,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center gap-3 sm:gap-4">
           {/* Logo y Marca a la izquierda */}
-          <a href="#inicio" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+          <a
+            href="#inicio"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateTo('#inicio');
+            }}
+            className="flex items-center gap-2.5 sm:gap-3 group shrink-0"
+          >
             <div className="h-10 sm:h-12 w-auto flex items-center justify-center group-hover:scale-105 transition-transform">
               <img src="/vitality-removebg-preview.png" alt="Logo Vitality" className="h-10 sm:h-12 w-auto object-contain" />
             </div>
@@ -52,10 +60,26 @@ export default function Navbar() {
 
           {/* Desktop Nav centrado y resumido */}
           <div className="hidden lg:flex items-center space-x-5 xl:space-x-7">
+            {currentRoute !== 'home' && (
+              <a
+                href="#inicio"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('#inicio');
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-xs"
+              >
+                <span>← Volver al Inicio</span>
+              </a>
+            )}
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo(link.href);
+                }}
                 className="relative font-heading font-medium tracking-wide text-[14px] xl:text-[15px] text-text-muted hover:text-primary transition-colors py-1 group/link text-center whitespace-nowrap flex items-center justify-center"
               >
                 <span>{link.name}</span>
@@ -95,11 +119,28 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 py-4 space-y-1 flex flex-col">
+          {currentRoute !== 'home' && (
+            <a
+              href="#inicio"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                navigateTo('#inicio');
+              }}
+              className="block px-4 py-3 bg-primary/10 text-primary font-heading font-bold text-center rounded-xl mb-2 hover:bg-primary hover:text-white transition-colors"
+            >
+              ← Volver al Inicio
+            </a>
+          )}
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                navigateTo(link.href);
+              }}
               className="block px-4 py-3 text-text-main hover:bg-background-light hover:text-accent rounded-xl font-heading font-medium text-base transition-colors text-center whitespace-nowrap"
             >
               {link.name}

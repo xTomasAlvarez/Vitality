@@ -58,7 +58,7 @@ export default function Contacto() {
             </div>
           </div>
 
-          <div className="bg-white p-5 sm:p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100">
+          <div id="formulario-contacto" className="bg-white p-5 sm:p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100 scroll-mt-24 sm:scroll-mt-28">
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
               <div>
                 <label htmlFor="nombre" className="block text-xs sm:text-sm font-semibold text-primary mb-1.5">Nombre completo</label>
